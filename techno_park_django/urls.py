@@ -18,7 +18,7 @@ from django.contrib.auth import views
 from django.urls import path, include
 
 from tech import urls as tech_url
-from tech.frontend import urls
+from frontend import urls
 
 urlpatterns = [
     path('local/admin/', admin.site.urls),

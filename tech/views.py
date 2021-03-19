@@ -2,19 +2,26 @@ from django.db.models import Model
 from django.http import HttpRequest
 from django.shortcuts import render
 from rest_framework.decorators import api_view
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-import tech.models
+from tech.models import LowUserModel
+from tech.serializers import LowUserSerializer
 
-
-# Create your views here.
 
 @api_view(['GET'])
 def get_user(request: HttpRequest):
-    if request.user.is_authenticated:
-        users = tech.models.LowUserModel.objects.filter(short_name=request.GET["short_name"])
-        return users
+    users = LowUserModel.objects.all()
 
-    return render(request, '../tech/frontend/templates/base/user_not_auth.html')
+    page = request.GET.get("page", 1)
+    paginator = Paginator(users, 10)
+
+    try:
+        data = paginator.page(page)
+    except PageNotAnInteger:
+        data = paginator.page(1)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
+    users_serializer = LowUserSerializer(data, context={'request': request}, many=True)
 
 
 def get_comments(request):

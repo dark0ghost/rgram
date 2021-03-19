@@ -3,7 +3,7 @@ from django.db.models import Model, CharField, DateTimeField
 from django.forms import ImageField
 
 
-class LowUserModel(User, Model):
+class LowUserModel(User):
     nick_name = CharField(max_length=30)
 
     avatar = ImageField()
