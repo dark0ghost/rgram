@@ -1,0 +1,108 @@
+version:  "3.8"
+
+services:
+  #django_app:
+   # depends_on:
+    # - postgres
+    #restart:
+     # on-failure
+    #volumes:
+     #   - ".:/usr/src/app"
+
+  traefik:
+    container_name: "traefik"
+    image: traefik:v2.4
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+        - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  centrifugal:
+    image: centrifugo/centrifugo
+    command: centrifugo -c config.json --engine=redis --redis_host=redis --redis_port=6379
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./config:/centrifugo"
+    ulimits:
+      nproc: 65536
+      nofile:
+        soft: 65536
+        hard: 65536
+
+  postgres:
+    container_name: postgres
+    image:
+      postgres:13
+    volumes:
+      - "./postgres/data:/var/lib/postgresql/data/pgdata"
+    environment:
+      - POSTGRES_USER:eventstracker
+      - POSTGRES_PASSWORD:A3dSA24Dctf2v4HE
+      - PGDATA:./postgres/data:/var/lib/postgresql/data/pgdata
+    restart:
+      always
+    ports:
+      - 5432:5432
+
+  influxdb:
+    image: influxdb:1.8
+    container_name: "influxdb"
+    restart: always
+    volumes:
+      - "./influxdb:/var/lib/influxdb"
+    env_file:
+      - evn/influxdb.evn
+    ports:
+      - 8086:8086
+
+  grafana:
+      image: grafana/grafana:7.3.4
+      container_name: "grafana"
+      restart: always
+      volumes:
+        - "/grafana:/var/lib/grafana"
+      environment:
+        - GF_DATE_FORMATS_DEFAULT_TIMEZONE=browser
+      ports:
+        - 3000:3000
+      user: "472"
+
+  redis:
+    container_name: redis
+    image:
+      redis:alpine
+    ports:
+      - "6379:6379"
+    command:
+      - 'redis-server'
+      - '--loglevel ${REDIS_LOGLEVEL:-warning}'
+      - '--databases 2'
+      - '--maxmemory ${REDIS_MAXMEM:-50mb}'
+      - '--maxmemory-policy ${REDIS_POLICY:-noeviction}'
+    volumes:
+      - ../data/redis:/data
+    restart: always
+
+  memcached:
+    image: memcached
+    ports:
+      - "11211:11211"
+    command:
+      - '-m 64'
+
+
+  adminer:
+    image:
+      adminer
+    restart:
+      always
+    ports:
+      - 8080:8080
