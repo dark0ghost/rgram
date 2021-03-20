@@ -1,27 +1,19 @@
-from django.db.models import Model
-from django.http import HttpRequest
-from django.shortcuts import render
-from rest_framework.decorators import api_view
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import HttpRequest
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-from tech.models import LowUserModel
+from tech.models import LowUserModel, TagModel
 from tech.serializers import LowUserSerializer
+from tech.utils import get_page
 
 
 @api_view(['GET'])
 def get_user(request: HttpRequest):
     users = LowUserModel.objects.all()
-
-    page = request.GET.get("page", 1)
-    paginator = Paginator(users, 10)
-
-    try:
-        data = paginator.page(page)
-    except PageNotAnInteger:
-        data = paginator.page(1)
-    except EmptyPage:
-        data = paginator.page(paginator.num_pages)
+    data = get_page(request, users)
     users_serializer = LowUserSerializer(data, context={'request': request}, many=True)
+    return Response({'data': users_serializer.data})
 
 
 def get_comments(request):
@@ -32,5 +24,9 @@ def get_moments(request):
     pass
 
 
+@api_view(['GET'])
 def get_tag(request):
-    pass
+    tags = TagModel.objects.all()
+    data = get_page(request, tags)
+    tags_serializer = TagSerializer(data, context={'request': request}, many=True)
+    return Response({'data': tag_serializer.data})

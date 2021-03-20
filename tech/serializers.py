@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from models import LowUserModel, MomentModel
+from tech.models import LowUserModel, MomentModel
 
 
 class LowUserSerializer(serializers.ModelSerializer):

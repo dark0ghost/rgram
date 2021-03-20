@@ -1,28 +1,6 @@
 version:  "3.8"
 
 services:
-  #django_app:
-   # depends_on:
-    # - postgres
-    #restart:
-     # on-failure
-    #volumes:
-     #   - ".:/usr/src/app"
-
-  traefik:
-    container_name: "traefik"
-    image: traefik:v2.4
-    command:
-      - "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-    ports:
-      - "80:80"
-      - "8080:8080"
-    volumes:
-        - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   centrifugal:
     image: centrifugo/centrifugo
