@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from tech.models import LowUserModel, TagModel
-from tech.serializers import LowUserSerializer
+from tech.serializers import LowUserSerializer, TagSerializer
 from tech.utils import get_page
 
 
@@ -29,4 +29,4 @@ def get_tag(request):
     tags = TagModel.objects.all()
     data = get_page(request, tags)
     tags_serializer = TagSerializer(data, context={'request': request}, many=True)
-    return Response({'data': tag_serializer.data})
+    return Response({'data': tags_serializer.data})

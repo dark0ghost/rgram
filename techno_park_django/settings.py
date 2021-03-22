@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'tech',
-    'crispy_forms'
+    'crispy_forms',
+    "frontend"
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,11 @@ ROOT_URLCONF = 'techno_park_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'tech/frontend/templates/base']
+        'DIRS': [
+                 BASE_DIR,
+                 "../frontend/build/"
+
+        ]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -135,3 +140,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 CORS_ORIGIN_WHITELIST = (
        'https://localhost:3000',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
