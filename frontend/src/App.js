@@ -1,5 +1,6 @@
 import './App.css';
 import React from "react";
+import renderPanel from "./headerPanel";
 
 
 class Home extends React.Component{
@@ -9,7 +10,7 @@ class Home extends React.Component{
 
    render() {
     return (
-      <></>
+      renderPanel()
     );
   }
 
