@@ -1,10 +1,9 @@
-frontend/public
-frontend/node_modules
+public
+node_modules
 db.sqlite3
 /static/bootstrap
 venv
-techno_park_s/__pycache__
-*/__pycache__
+__pycache__
 .idea
 frontend/build
 

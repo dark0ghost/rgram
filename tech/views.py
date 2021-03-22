@@ -1,4 +1,3 @@
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpRequest
 from rest_framework import status
 from rest_framework.decorators import api_view
