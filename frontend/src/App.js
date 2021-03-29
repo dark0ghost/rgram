@@ -1,6 +1,7 @@
 import './App.css';
 import React from "react";
-import renderPanel from "./headerPanel";
+import getProfile from "./Profile/Profile";
+import logo from "./decor/logo/logo"
 
 
 class Home extends React.Component{
@@ -9,8 +10,9 @@ class Home extends React.Component{
   }
 
    render() {
+
     return (
-      renderPanel()
+      logo()
     );
   }
 

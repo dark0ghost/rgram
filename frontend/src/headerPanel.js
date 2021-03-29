@@ -1,13 +1,16 @@
 
-let renderPanel = () =>{
+let RenderPanel = (props) =>{
 return (
+    <header>
     <div className="container">
-        <h2>Basic Panel</h2>
+        <h1>Rgram</h1>
         <div className="panel panel-default">
             <div className="panel-body">A Basic Panel</div>
+                <div className="left_panel"> nick_name</div>
         </div>
     </div>
+    </header>
   );
 }
 
-export default  renderPanel;
+export default  RenderPanel;
