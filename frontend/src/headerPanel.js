@@ -1,16 +1,27 @@
+import React from "react";
+import logo from '../Images/icon.jpg';
+import { Link } from 'react-router-dom';
 
-let RenderPanel = (props) =>{
-return (
-    <header>
-    <div className="container">
-        <h1>Rgram</h1>
-        <div className="panel panel-default">
-            <div className="panel-body">A Basic Panel</div>
-                <div className="left_panel"> nick_name</div>
+class RenderHeader extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      search: ""
+    }
+  }
+  render() {
+    return (
+      <div className="header">
+        <div className="brand">
+          <img src={logo} className="logo" alt="Brand" />
+          <h3>Rgram</h3>
+          <input type="text" name="search" value={this.props.search} placeholder="Search" className="search_url" />
         </div>
-    </div>
-    </header>
-  );
+        <Link to="/add"><button className="add-post">Add Post</button></Link>
+      </div>
+    );
+  }
 }
 
-export default  RenderPanel;
+
+export default RenderHeader;
