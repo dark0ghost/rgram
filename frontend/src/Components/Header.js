@@ -1,5 +1,5 @@
 import React from "react";
-import logo from '../decor/logo/icon.jpg';
+import logo from '../../../templates/icon.jpg';
 import { Link } from 'react-router-dom';
 
 class Header extends React.Component {

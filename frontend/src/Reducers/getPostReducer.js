@@ -9,6 +9,4 @@ export const getPostReducer = (state = { loading: false }, action) => {
       default:
         return state;
     }
-};
-
-
+  };

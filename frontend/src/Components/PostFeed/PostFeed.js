@@ -1,9 +1,9 @@
 import React from "react";
-import user from "../decor/test/user.jpeg";
+import user from "../../../../templates/user.jpeg";
+import post from "../../../../templates/post.jpg";
 import Comment from "./Comment";
 import { connect } from "react-redux";
-import { getPostThunk } from "../Post/getPosts";
-import mapStateToProps from "../State";
+import { getPostThunk } from "../../Actions/getPostActions";
 
 class PostFeed extends React.Component {
   constructor(props) {
@@ -41,6 +41,7 @@ class PostFeed extends React.Component {
   );
   }
 }
-
-
+const mapStateToProps = state => {
+  return state;
+};
 export default connect(mapStateToProps)(PostFeed);

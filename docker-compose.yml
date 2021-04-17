@@ -2,6 +2,17 @@ version:  "3.8"
 
 services:
 
+  web:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./templates:/etc/nginx/templates
+    ports:
+      - "443:80"
+    environment:
+      - NGINX_HOST=Rgram.org
+      - NGINX_PORT=80
+
   centrifugal:
     image: centrifugo/centrifugo
     command: centrifugo -c config.json --engine=redis --redis_host=redis --redis_port=6379

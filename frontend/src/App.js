@@ -1,22 +1,20 @@
-'use strict';
-import './App.css';
-import React from "react";
-import Header from './MainMenu/Header';
-import AddPost from './MainMenu/AddPosts';
-import PostFeed from './comments/Feed';
+import React, { Component } from "react";
+import "./App.css";
+import Header from './Components/Header';
+import AddPost from './Components/AddPost';
+import PostFeed from './Components/PostFeed/PostFeed';
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import loader from './Images/loader.gif';
 import { connect } from 'react-redux';
-import mapStateToProps from "./State";
 
-
-class App extends React.Component {
+class App extends Component {
   render() {
     return (
       <Router>
         <div>
-          <Header/>
-          {this.props.getPostReducer.loading && <div className="loader-div"><img src="https://raw.githubusercontent.com/saurabh216/Instagram-React/master/src/Images/loader.gif" className="loader"  alt="slow connection"/></div> }
-          {this.props.addPostReducer.loading && <div className="loader-div"><img src="https://raw.githubusercontent.com/saurabh216/Instagram-React/master/src/Images/loader.gif" className="loader" alt="slow connection" /></div> }
+          <Header />
+          {this.props.getPostReducer.loading && <div className="loader-div"><img src={loader} className="loader" /></div> }
+          {this.props.addPostReducer.loading && <div className="loader-div"><img src={loader} className="loader"  /></div> }
           <Route exact path="/" component={PostFeed} />
           <Route exact path="/add" component={AddPost} />
         </div>
@@ -24,7 +22,7 @@ class App extends React.Component {
     );
   }
 }
-
-
-
+const mapStateToProps = (state) => {
+  return state;
+}
 export default connect(mapStateToProps)(App);

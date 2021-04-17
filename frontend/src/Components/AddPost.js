@@ -1,9 +1,8 @@
 import React from "react";
-import '../css/AddPost.css';
+import './AddPost.css';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addPostThunk } from '../Post/addPost'
-import mapStateToProps from "react-redux/lib/connect/mapStateToProps";
+import { addPostThunk } from '../Actions/addPostActions'
 
 class AddPost extends React.Component {
   constructor(props){
@@ -52,5 +51,7 @@ class AddPost extends React.Component {
     );
   }
 }
-
+const mapStateToProps = (state) => {
+  return state;
+}
 export default withRouter(connect(mapStateToProps)(AddPost));
