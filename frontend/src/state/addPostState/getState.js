@@ -1,4 +1,4 @@
-const getPostReducer = (state = { loading: false }, action) => {
+export const getPostReducer = (state = { loading: false }, action) => {
     switch (action.type) {
       case "FETCH_STARTED":
         return Object.assign({}, state, { loading: true });
@@ -12,4 +12,3 @@ const getPostReducer = (state = { loading: false }, action) => {
 };
 
 
-export default getPostReducer;

@@ -1,9 +1,9 @@
 import React from "react";
-import user from "../../Images/user.jpeg";
+import user from "../decor/test/user.jpeg";
 import Comment from "./Comment";
 import { connect } from "react-redux";
 import { getPostThunk } from "../Post/getPosts";
-import mapStateToProps from "react-redux/lib/connect/mapStateToProps";
+import mapStateToProps from "../State";
 
 class PostFeed extends React.Component {
   constructor(props) {

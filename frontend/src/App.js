@@ -1,3 +1,4 @@
+'use strict';
 import './App.css';
 import React from "react";
 import Header from './MainMenu/Header';
@@ -5,7 +6,7 @@ import AddPost from './MainMenu/AddPosts';
 import PostFeed from './comments/Feed';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from 'react-redux';
-import mapStateToProps from "react-redux/lib/connect/mapStateToProps";
+import mapStateToProps from "./State";
 
 
 class App extends React.Component {
@@ -23,6 +24,7 @@ class App extends React.Component {
     );
   }
 }
+
 
 
 export default connect(mapStateToProps)(App);
