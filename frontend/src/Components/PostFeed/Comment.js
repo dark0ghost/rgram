@@ -12,7 +12,7 @@ class Comment extends React.Component {
   }
 
   like(){
-    if(this.state.isLiked == false){
+    if(!this.state.isLiked){
       this.setState({
         likes: this.state.likes + 1,
         isLiked: true
@@ -31,32 +31,36 @@ class Comment extends React.Component {
     });
 
     function timeDifference(previous) {
-      var current = Date.now();
-      var msPerMinute = 60 * 1000;
-      var msPerHour = msPerMinute * 60;
-      var msPerDay = msPerHour * 24;
-      var msPerMonth = msPerDay * 30;
-      var msPerYear = msPerDay * 365;
+      const current = Date.now();
+      const msPerMinute = 60 * 1000;
+      const msPerHour = msPerMinute * 60;
+      const msPerDay = msPerHour * 24;
+      const msPerMonth = msPerDay * 30;
+      const msPerYear = msPerDay * 365;
 
-      var elapsed = current - previous;
+      const elapsed = current - previous;
 
       if (elapsed < msPerMinute) {
         return Math.round(elapsed / 1000) + " seconds ago";
-      } else if (elapsed < msPerHour) {
+      }
+      if (elapsed < msPerHour) {
         return Math.round(elapsed / msPerMinute) + " minutes ago";
-      } else if (elapsed < msPerDay) {
+      }
+      if (elapsed < msPerDay) {
         return Math.round(elapsed / msPerHour) + " hours ago";
-      } else if (elapsed < msPerMonth) {
+      }
+      if (elapsed < msPerMonth) {
         return "approximately " + Math.round(elapsed / msPerDay) + " days ago";
-      } else if (elapsed < msPerYear) {
+      }
+      if (elapsed < msPerYear) {
         return (
           "approximately " + Math.round(elapsed / msPerMonth) + " months ago"
         );
-      } else {
-        return (
+      }
+      return (
           "approximately " + Math.round(elapsed / msPerYear) + " years ago"
         );
-      }
+
     }
     
     return (

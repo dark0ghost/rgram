@@ -1,4 +1,4 @@
-version:  "3.8"
+version: "3.8"
 
 services:
 
@@ -6,7 +6,7 @@ services:
     image: nginx
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./templates:/etc/nginx/templates
+      - ./templates:/data/images/
     ports:
       - "443:80"
     environment:
@@ -32,10 +32,8 @@ services:
       postgres:13
     volumes:
       - "./postgres/data:/var/lib/postgresql/data/pgdata"
-    environment:
-      - POSTGRES_USER:eventstracker
-      - POSTGRES_PASSWORD:A3dSA24Dctf2v4HE
-      - PGDATA:./postgres/data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - evn/pg.evn
     restart:
       always
     ports:
