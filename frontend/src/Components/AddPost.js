@@ -17,18 +17,18 @@ class AddPost extends React.Component {
 
   handleChange(e){
     e.preventDefault();
-    var name = e.target.name;
-    var value = e.target.value;
+    const name = e.target.name;
+    const value = e.target.value;
     this.setState({
       [name] : value
     })
   }
 
   addPost(){
-    var input = {
+    const input = {
       url: this.state.url,
       caption: this.state.caption
-    }
+    };
     this.props.dispatch(addPostThunk(input,this.props.history));
     this.setState({
       url: "",
