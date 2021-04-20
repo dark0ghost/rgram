@@ -22,12 +22,12 @@ const get_Post_Error = () => {
 export const getPostThunk = () => {
     return (dispatch) => {
         dispatch(get_Post_Started());
-        axios.get("https://5ad327b6df04690014938c27.mockapi.io/posts").then((response) => {
+        axios.get("http://5ad327b6df04690014938c27.mockapi.io/posts").then((response) => {
             console.log(response.data);
-            dispatch(get_Post_Success(response.data));
+            dispatch(get_Post_Success(response.data));            
         }).catch((error) => {
             console.log('error: ', error);
-            dispatch(get_Post_Error());
+            dispatch(get_Post_Error());            
         })
     }
 }

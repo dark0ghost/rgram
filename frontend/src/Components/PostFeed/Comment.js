@@ -12,7 +12,7 @@ class Comment extends React.Component {
   }
 
   like(){
-    if(this.state.isLiked){
+    if(!this.state.isLiked){
       this.setState({
         likes: this.state.likes + 1,
         isLiked: true
@@ -57,12 +57,12 @@ class Comment extends React.Component {
           "approximately " + Math.round(elapsed / msPerMonth) + " months ago"
         );
       }
-
-        return (
+      return (
           "approximately " + Math.round(elapsed / msPerYear) + " years ago"
         );
-    }
 
+    }
+    
     return (
       <div className="comment-area">
         <div className="icon-area">

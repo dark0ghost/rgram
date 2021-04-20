@@ -1,4 +1,4 @@
-const addPostReducer = (state= {loading: false, msg: ""}, action) => {
+export const addPostReducer = (state={loading: false, msg: ""},action) => {
     switch(action.type){
         case "ADD_STARTED":
         return Object.assign({}, state, { loading: true });
@@ -10,5 +10,3 @@ const addPostReducer = (state= {loading: false, msg: ""}, action) => {
     }
 
 }
-
-export default addPostReducer;
