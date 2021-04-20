@@ -16,7 +16,7 @@ class Header extends React.Component {
           <h3>Rgram</h3>
           <input type="text" name="search" value={this.props.search} placeholder="Search" className="search_url" />
         </div>
-        <Link to="/add"><button className="add-post">Add Post</button></Link>
+        <Link to="/register"><button className="add-post">signup</button></Link>
       </div>
     );
   }
