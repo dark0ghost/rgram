@@ -1,12 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 class SignupForm extends React.Component {
     state = {
         username: '',
-        password: ''
+        password: '',
+        logged_in: !!localStorage.getItem('token'),
     };
 
     handle_change = e => {
@@ -21,7 +21,7 @@ class SignupForm extends React.Component {
 
     handle_signup = (e, data) => {
         e.preventDefault();
-        fetch('http://localhost:8000/api/users/', {
+        console.log(fetch('http://localhost:8000/api/users/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -33,11 +33,11 @@ class SignupForm extends React.Component {
                 localStorage.setItem('token', json.token);
                 this.setState({
                     logged_in: true,
-                    displayed_form: '',
                     username: json.username
                 });
-            });
+            }).toString());
     };
+
 
     render() {
         return (
@@ -62,12 +62,6 @@ class SignupForm extends React.Component {
         );
     }
 }
-
-
-
-SignupForm.propTypes = {
-    handle_signup: PropTypes.func.isRequired
-};
 
 const mapStateToProps = (state) => {
     return state;

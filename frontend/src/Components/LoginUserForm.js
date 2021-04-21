@@ -1,12 +1,12 @@
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import React from 'react';
-import PropTypes from 'prop-types';
 
 class LoginForm extends React.Component {
     state = {
         username: '',
-        password: ''
+        password: '',
+        logged_in: !!localStorage.getItem('token'),
     };
 
     handle_change = e => {
@@ -21,7 +21,7 @@ class LoginForm extends React.Component {
 
     handle_login = (e, data) => {
         e.preventDefault();
-        fetch('http://localhost:8000/token-auth/', {
+        fetch('http://localhost:8000/api/token-auth/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -33,7 +33,6 @@ class LoginForm extends React.Component {
                 localStorage.setItem('token', json.token);
                 this.setState({
                     logged_in: true,
-                    displayed_form: '',
                     username: json.user.username
                 });
             });
@@ -64,9 +63,6 @@ class LoginForm extends React.Component {
 }
 
 
-LoginForm.propTypes = {
-    handle_login: PropTypes.func.isRequired
-};
 const mapStateToProps = (state) => {
     return state;
 }

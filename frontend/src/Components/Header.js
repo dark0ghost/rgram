@@ -1,39 +1,31 @@
 import React from "react";
-import Nav from "./Nav";
 
 class Header extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      search: "",
+        logged_in: !!localStorage.getItem('token'),
+        search: "",
     }
   }
 
-  componentDidMount() {
-    if (this.state.logged_in) {
-      fetch('http://localhost:8000/api/current_user/', {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`
-        }
-      })
-          .then(res => res.json())
-          .then(json => {
-            this.setState({ username: json.username });
-          });
+    nav() {
+        const logged_out_nav = (
+            <ul>
+                <ul>
+                    <li><a href={"/login"}>login</a></li>
+                    <li><a href={"/signup"}>signup</a></li>
+                </ul>
+            </ul>
+        );
+
+        const logged_in_nav = (
+            <ul>
+                <li><a href={"/logout"}>logout</a></li>
+            </ul>
+        );
+        return <div>{this.props.logged_in ? logged_in_nav : logged_out_nav}</div>;
     }
-  }
-
-  handle_logout = () => {
-    localStorage.removeItem('token');
-    this.setState({ logged_in: false, username: '' });
-  };
-
-  display_form = form => {
-    this.setState({
-      displayed_form: form
-    });
-  };
-
 
   render() {
     return (
@@ -43,14 +35,7 @@ class Header extends React.Component {
           <h3>Rgram</h3>
           <input type="text" name="search" value={this.props.search} placeholder="Search" className="search_url" />
         </div>
-        <Nav
-            logged_in={this.state.logged_in}
-            display_form={this.display_form}
-            handle_logout={this.handle_logout}
-        />
-        <h3>
-          {this.state.logged_in ? this.state.username : 'Please Log In'}
-        </h3>
+          {this.state.logged_in ? this.state.username : this.nav()}
       </div>
     );
   }
