@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from django.db.models import Model, CharField, DateTimeField
-from django.forms import ImageField
+from django.db.models import Model, CharField, DateTimeField, ImageField
+from rest_framework.fields import EmailField
 
 
 class LowUserModel(User):
@@ -8,7 +8,8 @@ class LowUserModel(User):
 
     avatar = ImageField()
 
-    short_name = CharField(max_length=120, unique=True)
+    short_name = CharField(max_length=120, unique=True, default="noname")
+    email = EmailField(allow_blank=True, label='Адрес электронной почты', max_length=254, required=True)
 
     class Meta:
         ordering = ["nick_name"]
@@ -24,7 +25,7 @@ class MomentModel(Model):
 
     user = LowUserModel()
 
-    date = DateTimeField()
+    date = DateTimeField(auto_now=True)
 
     image = ImageField()
 

@@ -59,8 +59,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-                 BASE_DIR,
-                 "../frontend/build/"
+            BASE_DIR,
+            "../frontend/build/"
 
         ]
         ,
@@ -138,11 +138,23 @@ CORS_ORIGIN_ALLOW_ALL = False
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 CORS_ORIGIN_WHITELIST = (
-       'https://localhost:3000',
+    'https://localhost:3000',
 )
 
+
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    )
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'techno_park_django.utils.my_jwt_response_handler'
 }
