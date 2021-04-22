@@ -34,7 +34,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     class Meta:
         model = LowUserModel
-        fields = ('token', 'username', 'password', "email")
+        fields = ('token', 'username', 'password', "email", "avatar")
 
 
 class MomentSerializer(ModelSerializer):

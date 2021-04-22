@@ -41,7 +41,7 @@ class Header extends React.Component {
     return (
       <div className="header">
         <div className="brand">
-          <img src="http://localhost:443/icon.jpg" className="logo" alt="Brand" />
+            <a href={"/"}> <img src="http://localhost:443/icon.jpg" className="logo" alt="Brand" /></a>
           <h3>Rgram</h3>
           <input type="text" name="search" value={this.props.search} placeholder="Search" className="search_url" />
         </div>
