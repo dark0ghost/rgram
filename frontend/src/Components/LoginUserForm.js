@@ -21,7 +21,7 @@ class LoginForm extends React.Component {
 
     handle_login = (e, data) => {
         e.preventDefault();
-        fetch('http://localhost:8000/api/token-auth/', {
+        fetch('/api/token-auth/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

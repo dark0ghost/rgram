@@ -21,7 +21,7 @@ class SignupForm extends React.Component {
 
     handle_signup = (e, data) => {
         e.preventDefault();
-        console.log(fetch('http://localhost:8000/api/users/', {
+        console.log(fetch('/api/users/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
