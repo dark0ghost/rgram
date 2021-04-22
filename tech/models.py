@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.db.models import Model, CharField, DateTimeField, ImageField, ForeignKey, CASCADE, ManyToManyField
+from django.db.models import Model, CharField, DateTimeField, ImageField, ForeignKey, CASCADE, ManyToManyField, \
+    OneToOneField
 from rest_framework.fields import EmailField
 
 
@@ -32,5 +33,5 @@ class TagModel(Model):
 
 
 class Subscribers(Model):
-    author = ForeignKey(LowUserModel, on_delete=CASCADE, related_name='user', unique=True)
+    author = OneToOneField(LowUserModel, on_delete=CASCADE, related_name='user', unique=True)
     follows = ManyToManyField("self", related_name='follows')
