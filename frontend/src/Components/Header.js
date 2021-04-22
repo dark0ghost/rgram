@@ -26,8 +26,18 @@ class Header extends React.Component {
         );
         return <div>{this.props.logged_in ? logged_in_nav : logged_out_nav}</div>;
     }
+    handle_logout = () => {
+        localStorage.removeItem('token');
+        this.setState({ logged_in: false, username: '' });
+    };
 
   render() {
+      const logged_in_nav = (
+          <ul>
+              <li>{this.state.username}</li>
+              <li onClick={this.handle_logout}>logout</li>
+          </ul>
+      );
     return (
       <div className="header">
         <div className="brand">
@@ -35,7 +45,7 @@ class Header extends React.Component {
           <h3>Rgram</h3>
           <input type="text" name="search" value={this.props.search} placeholder="Search" className="search_url" />
         </div>
-          {this.state.logged_in ? this.state.username : this.nav()}
+          {this.state.logged_in ? logged_in_nav : this.nav()}
       </div>
     );
   }

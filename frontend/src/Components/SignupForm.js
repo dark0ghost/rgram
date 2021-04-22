@@ -6,6 +6,7 @@ class SignupForm extends React.Component {
     state = {
         username: '',
         password: '',
+        email: '',
         logged_in: !!localStorage.getItem('token'),
     };
 
@@ -55,6 +56,12 @@ class SignupForm extends React.Component {
                     type="password"
                     name="password"
                     value={this.state.password}
+                    onChange={this.handle_change}
+                />
+                <input
+                    type="email"
+                    name="email"
+                    value={this.state.email}
                     onChange={this.handle_change}
                 />
                 <input type="submit" />

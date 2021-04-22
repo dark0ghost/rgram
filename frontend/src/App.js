@@ -19,7 +19,7 @@ class App extends Component {
 
   componentDidMount() {
     if (this.state.logged_in) {
-      fetch('http://localhost:8000/api/current_user/', {
+      fetch('/api/current_user/', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
@@ -31,10 +31,7 @@ class App extends Component {
     }
   }
 
-  handle_logout = () => {
-    localStorage.removeItem('token');
-    this.setState({ logged_in: false, username: '' });
-  };
+
 
   render() {
     const loader = "http://localhost:443/loader.gif";
