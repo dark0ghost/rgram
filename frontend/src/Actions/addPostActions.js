@@ -28,7 +28,7 @@ export const addPostThunk = (input, history) => {
             likes: 0,
             time: Date.now()
         };
-        axios.post("http://5ad327b6df04690014938c27.mockapi.io/posts",obj).then((response) => {
+        axios.post("https://5ad327b6df04690014938c27.mockapi.io/posts",obj).then((response) => {
             console.log(response.data);
             dispatch(add_Post_Success());  
             history.push("/")          

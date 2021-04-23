@@ -143,6 +143,8 @@ CORS_ORIGIN_WHITELIST = (
     'https://localhost:3000',
 )
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -160,3 +162,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 JWT_AUTH = {
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'techno_park_django.utils.my_jwt_response_handler'
 }
+
+AUTH_USER_MODEL = 'tech.LowUserModel'

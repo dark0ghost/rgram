@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.http import HttpRequest
 from rest_framework import permissions, status
 from rest_framework.decorators import api_view
@@ -23,6 +24,7 @@ def post_tag(request: HttpRequest):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -42,8 +44,11 @@ class UserList(APIView):
 
     @staticmethod
     def post(request):
-        serializer = UserSerializerWithToken(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            serializer = UserSerializerWithToken(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except IntegrityError as e:
+            print(e)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

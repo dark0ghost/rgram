@@ -7,6 +7,7 @@ class SignupForm extends React.Component {
         username: '',
         password: '',
         email: '',
+        name: '',
         logged_in: !!localStorage.getItem('token'),
     };
 
@@ -21,8 +22,9 @@ class SignupForm extends React.Component {
     };
 
     handle_signup = (e, data) => {
+        const form = e.target;
         e.preventDefault();
-        console.log(fetch('/api/users/', {
+        fetch('/api/users/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -31,12 +33,24 @@ class SignupForm extends React.Component {
         })
             .then(res => res.json())
             .then(json => {
+                console.log(Object.keys(json).length)
+                console.log(json)
+                if(Object.keys(json).length){
                 localStorage.setItem('token', json.token);
+                localStorage.setItem('username', json.name);
                 this.setState({
                     logged_in: true,
+                    name: json.name,
                     username: json.username
                 });
-            }).toString());
+                return
+                }
+                this.setState({
+                    logged_in: false,
+                })
+                alert("auth failed")
+            });
+        form.reset();
     };
 
 
@@ -44,11 +58,11 @@ class SignupForm extends React.Component {
         return (
             <form onSubmit={e => this.handle_signup(e, this.state)}>
                 <h4>Sign Up</h4>
-                <label htmlFor="username">Username</label>
+                <label htmlFor="name">Username</label>
                 <input
                     type="text"
-                    name="username"
-                    value={this.state.username}
+                    name="name"
+                    value={this.state.name}
                     onChange={this.handle_change}
                 />
                 <label htmlFor="password">Password</label>
@@ -63,6 +77,13 @@ class SignupForm extends React.Component {
                     type="email"
                     name="email"
                     value={this.state.email}
+                    onChange={this.handle_change}
+                />
+                <label htmlFor="username">Short name </label>
+                <input
+                    type="username"
+                    name="username"
+                    value={this.state.username}
                     onChange={this.handle_change}
                 />
                 <input type="submit" />

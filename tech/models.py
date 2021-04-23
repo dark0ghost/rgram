@@ -1,20 +1,23 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db.models import Model, CharField, DateTimeField, ImageField, ForeignKey, CASCADE, ManyToManyField, \
     OneToOneField
 from rest_framework.fields import EmailField
 
 
-class LowUserModel(User):
-    nick_name = CharField(max_length=30)
+class LowUserModel(AbstractUser):
     avatar = ImageField(default='templates/deficon.png')
-    short_name = CharField(max_length=120, unique=True, default="noname")
+    name = CharField(max_length=120)
     email = EmailField(allow_blank=True, label='Адрес электронной почты', max_length=254, required=True)
 
     class Meta:
-        ordering = ["short_name"]
+        ordering = ["username"]
+        swappable = 'AUTH_USER_MODEL'
 
     def __str__(self):
-        return self.nick_name
+        return self.username
+
+    def set_email(self, val):
+        setattr(self, "email", val)
 
 
 class MomentModel(Model):
