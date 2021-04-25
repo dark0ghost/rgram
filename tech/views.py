@@ -4,28 +4,14 @@ from rest_framework import permissions, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from tech.models import TagModel
-from tech.serializers import TagSerializer, UserSerializer, UserSerializerWithToken
+from tech.serializers import UserSerializer, UserSerializerWithToken, MomentSerializer
 from tech.utils import get_page
 
 
 @api_view(['GET'])
-def get_tag(request: HttpRequest):
-    tags = TagModel.objects.all()
-    data = get_page(request, tags)
-    tags_serializer = TagSerializer(data, context={'request': request}, many=True)
-    return Response({'data': tags_serializer.data})
-
-
-@api_view(['POST'])
-def post_tag(request: HttpRequest):
-    serializer = TagSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    print(serializer.errors)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def get_post(request: HttpRequest):
+    serializer = MomentSerializer()
+    return Response(serializer.data)
 
 
 @api_view(['GET'])

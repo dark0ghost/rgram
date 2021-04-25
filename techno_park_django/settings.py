@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'tech',
     'crispy_forms',
-    "frontend"
+    'frontend',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +63,6 @@ TEMPLATES = [
             BASE_DIR,
             "../frontend/build/",
             "../templates"
-
 
         ]
         ,
@@ -144,7 +144,6 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (

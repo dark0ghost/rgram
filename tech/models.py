@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import Model, CharField, DateTimeField, ImageField, ForeignKey, CASCADE, ManyToManyField, \
     OneToOneField
 from rest_framework.fields import EmailField
+from taggit.managers import TaggableManager
 
 
 class LowUserModel(AbstractUser):
@@ -26,13 +27,10 @@ class MomentModel(Model):
     user = ForeignKey(LowUserModel, on_delete=CASCADE)
     date = DateTimeField(auto_now=True)
     image = ImageField()
+    tags = TaggableManager()
 
     class Meta:
         ordering = ["date"]
-
-
-class TagModel(Model):
-    name = CharField(max_length=120)
 
 
 class Subscribers(Model):
