@@ -143,3 +143,8 @@ body{
 .heart{
   color: red
 }
+
+input {
+  display: block;
+  margin: 5px 0 5px;
+}

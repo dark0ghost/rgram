@@ -1,42 +1,40 @@
+from django.db import IntegrityError
 from django.http import HttpRequest
-from rest_framework import status
+from rest_framework import permissions, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from tech.models import LowUserModel, TagModel
-from tech.serializers import LowUserSerializer, TagSerializer
+from rest_framework.views import APIView
+from tech.serializers import UserSerializer, UserSerializerWithToken, MomentSerializer
 from tech.utils import get_page
 
 
 @api_view(['GET'])
-def get_user(request: HttpRequest):
-    users = LowUserModel.objects.all()
-    data = get_page(request, users)
-    users_serializer = LowUserSerializer(data, context={'request': request}, many=True)
-    return Response({'data': users_serializer.data})
+def get_post(request: HttpRequest):
+    serializer = MomentSerializer()
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
-def get_tag(request):
-    tags = TagModel.objects.all()
-    data = get_page(request, tags)
-    tags_serializer = TagSerializer(data, context={'request': request}, many=True)
-    return Response({'data': tags_serializer.data})
+def current_user(request: HttpRequest):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
 
 
-@api_view(['POST'])
-def post_user(request: HttpRequest):
-    serializer = LowUserSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class UserList(APIView):
+    """
+    Create a new user. It's called 'UserList' because normally we'd have a get
+    method here too, for retrieving a list of all User objects.
+    """
 
+    permission_classes = (permissions.AllowAny,)
 
-@api_view(['POST'])
-def post_tag(request):
-    serializer = TagSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    @staticmethod
+    def post(request):
+        try:
+            serializer = UserSerializerWithToken(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except IntegrityError as e:
+            print(e)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

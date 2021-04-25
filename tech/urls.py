@@ -1,10 +1,11 @@
 from django.urls import path
+from rest_framework_jwt.views import obtain_jwt_token
 
-from tech import views
+from tech.views import current_user, UserList, get_post
 
 urlpatterns = [
-    path('get/users', views.get_user, name="get_user"),
-    path("get/tag", views.get_tag, name="get_tag"),
-    path('post/users', views.post_user, name="get_user"),
-    path("post/tag", views.post_tag, name="get_tag")
+    path('current_user/', current_user),
+    path('users/', UserList.as_view()),
+    path('token-auth/', obtain_jwt_token),
+    path("posts/", get_post)
 ]

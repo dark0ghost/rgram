@@ -14,3 +14,6 @@ def get_page(request: HttpRequest, model: Model) -> Page:
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
     return data
+
+
+
