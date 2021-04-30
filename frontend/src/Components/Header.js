@@ -31,17 +31,34 @@ class Header extends React.Component {
         this.setState({ logged_in: false, username: '' });
     };
 
-  render() {
+
+
+    componentDidMount() {
+        if (this.state.logged_in) {
+            fetch('/api/current_user/', {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`
+                }
+            })
+                .then(res => res.json())
+                .then(json => {
+                    this.setState({ username: json.username });
+                });
+
+        }
+    }
+
+    render() {
       const logged_in_nav = (
           <ul>
-              <li>{this.state.username}</li>
+              <li><a href={"profile"}>{this.state.username}</a></li>
               <li onClick={this.handle_logout}>logout</li>
           </ul>
       );
     return (
       <div className="header">
         <div className="brand">
-            <a href={"/"}> <img src="http://localhost:443/icon.jpg" className="logo" alt="Brand" /></a>
+            <a href={"/"}> <img src="http://localhost:443/icon.jpg" className="logo" alt="Rgarm" /></a>
           <h3>Rgram</h3>
           <input type="text" name="search" value={this.props.search} placeholder="Search" className="search_url" />
         </div>
