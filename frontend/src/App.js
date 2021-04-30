@@ -17,23 +17,6 @@ class App extends Component {
     };
   }
 
-
-  componentDidMount() {
-    if (this.state.logged_in) {
-      fetch('/api/current_user/', {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`
-        }
-      })
-          .then(res => res.json())
-          .then(json => {
-            this.setState({ username: json.username });
-          });
-    }
-  }
-
-
-
   render() {
     const loader = "http://localhost:443/loader.gif";
     return (
