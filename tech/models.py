@@ -1,14 +1,12 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Model, CharField, DateTimeField, ImageField, ForeignKey, CASCADE, ManyToManyField, \
     OneToOneField
-from rest_framework.fields import EmailField
 from taggit.managers import TaggableManager
 
 
 class LowUserModel(AbstractUser):
     avatar = ImageField(default='templates/deficon.png')
     name = CharField(max_length=120)
-    email = EmailField(allow_blank=True, label='Адрес электронной почты', max_length=254, required=True)
 
     class Meta:
         ordering = ["username"]

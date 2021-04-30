@@ -28,13 +28,14 @@ class LoginForm extends React.Component {
             },
             body: JSON.stringify(data)
         })
-            .then(res => res.json())
+            .then(res =>res.json())
             .then(json => {
                 localStorage.setItem('token', json.token);
                 this.setState({
                     logged_in: true,
                     username: json.user.username
                 });
+                window.location = "/"
             });
     };
 

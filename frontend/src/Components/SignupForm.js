@@ -43,6 +43,7 @@ class SignupForm extends React.Component {
                     name: json.name,
                     username: json.username
                 });
+                window.location = "/"
                 return
                 }
                 this.setState({
