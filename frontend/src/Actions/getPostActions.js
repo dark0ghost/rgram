@@ -22,7 +22,10 @@ const get_Post_Error = () => {
 export const getPostThunk = () => {
     return (dispatch) => {
         dispatch(get_Post_Started());
-        axios.get("https://5ad327b6df04690014938c27.mockapi.io/posts").then((response) => {
+        axios.get("http://127.0.0.1:8000/api/posts/", {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }}).then((response) => {
             console.log(response.data);
             dispatch(get_Post_Success(response.data));            
         }).catch((error) => {

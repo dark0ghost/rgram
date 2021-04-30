@@ -12,6 +12,7 @@ from tech.utils import get_page
 @api_view(['GET'])
 @login_required
 def get_post(request: HttpRequest):
+    print(1)
     serializer = MomentSerializer()
     return Response(serializer.data)
 
