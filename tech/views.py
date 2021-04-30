@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpRequest
 from rest_framework import permissions, status
@@ -9,6 +10,7 @@ from tech.utils import get_page
 
 
 @api_view(['GET'])
+@login_required
 def get_post(request: HttpRequest):
     serializer = MomentSerializer()
     return Response(serializer.data)
@@ -21,10 +23,6 @@ def current_user(request: HttpRequest):
 
 
 class UserList(APIView):
-    """
-    Create a new user. It's called 'UserList' because normally we'd have a get
-    method here too, for retrieving a list of all User objects.
-    """
 
     permission_classes = (permissions.AllowAny,)
 
