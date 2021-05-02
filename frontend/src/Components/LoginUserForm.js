@@ -21,6 +21,7 @@ class LoginForm extends React.Component {
 
     handle_login = (e, data) => {
         e.preventDefault();
+        const form = e.target;
         fetch('/api/token-auth/', {
             method: 'POST',
             headers: {
@@ -30,13 +31,20 @@ class LoginForm extends React.Component {
         })
             .then(res =>res.json())
             .then(json => {
-                localStorage.setItem('token', json.token);
-                this.setState({
-                    logged_in: true,
-                    username: json.user.username
-                });
-                window.location = "/"
+                console.log(json)
+                try {
+                    this.setState({
+                        logged_in: true,
+                        username: json.user.username
+                    });
+                    localStorage.setItem('token', json.token);
+                    window.location = "/"
+                    return
+                }catch (e) {
+                    alert(json.non_field_errors[0])
+                }
             });
+        form.reset();
     };
 
     render() {
