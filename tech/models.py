@@ -15,9 +15,6 @@ class LowUserModel(AbstractUser):
     def __str__(self):
         return self.username
 
-    def set_email(self, val):
-        setattr(self, "email", val)
-
 
 class MomentModel(Model):
     title = CharField(max_length=50)
@@ -26,6 +23,10 @@ class MomentModel(Model):
     date = DateTimeField(auto_now=True)
     image = ImageField()
     tags = TaggableManager()
+    likes = ManyToManyField(LowUserModel, related_name='blogpost_like', default=None)
+
+    def number_of_likes(self):
+        return self.likes.count()
 
     class Meta:
         ordering = ["date"]
@@ -34,3 +35,8 @@ class MomentModel(Model):
 class Subscribers(Model):
     author = OneToOneField(LowUserModel, on_delete=CASCADE, related_name='user', unique=True)
     follows = ManyToManyField("self", related_name='follows')
+
+
+class Comments(Model):
+    user = ForeignKey(LowUserModel, on_delete=CASCADE)
+    text = CharField(max_length=1200)
