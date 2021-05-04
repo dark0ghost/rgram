@@ -46,4 +46,3 @@ class MomentSerializer(ModelSerializer):
 
     def create(self, validated_data):
         return MomentModel.objects.create(**validated_data)
-
