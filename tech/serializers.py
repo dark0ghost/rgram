@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField, EmailField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField, EmailField, ImageField
 from rest_framework_jwt.settings import api_settings
 from tech.models import MomentModel, LowUserModel
 
@@ -6,15 +6,19 @@ from tech.models import MomentModel, LowUserModel
 class UserSerializer(ModelSerializer):
     class Meta:
         model = LowUserModel
-        fields = ('username', 'name')
+        fields = ('username', 'name', 'avatar')
+
 
 
 class UserSerializerWithToken(ModelSerializer):
-    token = SerializerMethodField()
-    password = CharField(write_only=True)
+    token = SerializerMethodField(read_only=True)
+    password = CharField(max_length=128,
+                         min_length=8,
+                         write_only=True)
     email = EmailField(write_only=True)
     username = CharField()
     name = CharField()
+    avatar = ImageField(use_url=True)
 
     @staticmethod
     def get_token(obj):

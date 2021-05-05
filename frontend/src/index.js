@@ -13,7 +13,6 @@ const store = createStore(combineReducers({
     getPostReducer
 }),applyMiddleware(thunk));
 
-export default store;
 
 
 ReactDOM.render(
