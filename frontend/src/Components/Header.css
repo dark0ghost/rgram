@@ -16,21 +16,19 @@
 .gradient-button:hover {
     background-position: right center;
 }
-.right-nav{
-    margin: 0 0 0 auto;
-}
-ul.nav{
-    margin-left: 0px;
-    padding-left: 0px;
+
+
+.nav{
     list-style: none;
 }
 .nav li {
     float: left;
+    padding-right: 10px ;
 }
-ul.nav a {
+.nav a {
     display: block;
     width: 5em;
-    padding:10px;
+    padding: 0px;
     margin: 0 5px;
     text-decoration: none;
     text-align: center;

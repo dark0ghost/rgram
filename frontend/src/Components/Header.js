@@ -15,21 +15,15 @@ class Header extends React.Component {
   }
 
     nav() {
-        const logged_out_nav = (
+        return(
+            <div>
             <ul>
-                <ul>
-                    <li><a href={"/login"}>login</a></li>
-                    <li><a href={"/signup"}>signup</a></li>
-                </ul>
+            <ul className={"nav"}>
+                <li><a href={"/login"}>login</a></li>
+                <li><a href={"/signup"}>signup</a></li>
             </ul>
-        );
-
-        const logged_in_nav = (
-            <ul>
-                <li><a href={"/logout"}>logout</a></li>
-            </ul>
-        );
-        return <div>{this.props.logged_in ? logged_in_nav : logged_out_nav}</div>;
+        </ul>
+        </div>);
     }
     handle_logout = () => {
         localStorage.removeItem('token');
@@ -55,25 +49,28 @@ class Header extends React.Component {
     }
 
     render() {
-      const logged_in_nav = (
-          <ul className={"nav"}>
-              <li><a href={"/add"} className={"gradient-button"}>add post</a></li>
-              <li onClick={this.handle_logout}>logout</li>
-              <li><a href={"profile"}>{this.state.username}</a></li>
-              <li><img src={this.state.avatar} alt={"profile"}/></li>
-          </ul>
-      );
-    return (
-      <div className="header-nav">
-        <div className="brand">
-            <a href={"/"}> <img src="http://localhost:443/icon.jpg" className="logo" alt="Rgarm" /></a>
-          <h3>Rgram</h3>
-          <input type="text" name="search" value={this.props.search} placeholder="Search" className="search_url" />
-           <div className={"right"}>  {this.state.logged_in ? logged_in_nav : this.nav()}</div>
-        </div>
-      </div>
-    );
-  }
+        const logged_in_nav = (
+            <div>
+                <ul>
+            <ul className={"nav"}>
+                <li><a href={"/add"}   className={"gradient-button"}>add post</a></li>
+                <li><a href={"profile"}>{this.state.username}</a></li>
+                <li onClick={this.handle_logout}>logout</li>
+            </ul>
+                </ul>
+            </div>
+        );
+        return (
+            <div className="header">
+                <div className="brand">
+                    <a href={"/"}> <img src="http://localhost:443/icon.jpg" className="logo" alt="Rgarm" /></a>
+                    <h3>Rgram</h3>
+                    <input type="text" name="search" value={this.props.search} placeholder="Search" className="search_url" />
+                </div>
+                {this.state.logged_in ? logged_in_nav : this.nav()}
+            </div>
+        );
+    }
 }
 
 export default Header;
