@@ -6,6 +6,7 @@ class LoginForm extends React.Component {
     state = {
         username: '',
         password: '',
+        profile_photo: '',
         logged_in: !!localStorage.getItem('token'),
     };
 
@@ -35,9 +36,11 @@ class LoginForm extends React.Component {
                 try {
                     this.setState({
                         logged_in: true,
-                        username: json.user.username
+                        username: json.user.username,
+                        profile_photo: json.user.avatar,
                     });
                     localStorage.setItem('token', json.token);
+                    localStorage.setItem('avatar', json.user.avatar);
                     window.location = "/"
                     return
                 }catch (e) {

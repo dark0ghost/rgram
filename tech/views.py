@@ -25,7 +25,7 @@ def add_post(request: HttpRequest):
 @api_view(['POST'])
 @login_required()
 def delete(request, pk):
-    # Get object with this pk
+
     article = get_object_or_404(MomentModel.objects.all(), pk=pk)
     article.delete()
     return Response({
@@ -54,6 +54,11 @@ def get_post(request: HttpRequest):
 def current_user(request: HttpRequest):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
+
+@api_view(['GET'])
+@login_required
+def get_user_photo(request: HttpRequest):
+    pass
 
 
 class UserList(APIView):
@@ -84,3 +89,5 @@ class MomentModelDetailView(DetailView):
         data['number_of_likes'] = likes_connected.number_of_likes()
         data['post_is_liked'] = liked
         return data
+
+

@@ -9,5 +9,5 @@ urlpatterns = [
     path('token-auth/', obtain_jwt_token),
     path("posts/", get_post),
     path("create_post/", add_post),
-    path("add_like", add_like)
+    path("add_like", add_like),
 ]
