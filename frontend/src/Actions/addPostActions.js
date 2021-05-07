@@ -28,7 +28,7 @@ export const addPostThunk = (input, history) => {
             likes: 0,
             time: Date.now()
         };
-        axios.post("http://127.0.0.1:8000/api/create_post/",obj).then((response) => {
+        axios.post("/api/create_post/",obj).then((response) => {
             console.log(response.data);
             dispatch(add_Post_Success());  
             history.push("/")          

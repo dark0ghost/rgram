@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   render() {
-    const loader = "http://localhost:443/loader.gif";
+    const loader = "http://localhost:8000/templates/loader.gif";
     return (
       <Router>
         <div>

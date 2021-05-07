@@ -9,7 +9,6 @@ class UserSerializer(ModelSerializer):
         fields = ('username', 'name', 'avatar')
 
 
-
 class UserSerializerWithToken(ModelSerializer):
     token = SerializerMethodField(read_only=True)
     password = CharField(max_length=128,

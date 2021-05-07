@@ -22,7 +22,7 @@ const get_Post_Error = () => {
 export const getPostThunk = () => {
     return (dispatch) => {
         dispatch(get_Post_Started());
-        axios.get("http://127.0.0.1:8000/api/posts/", {
+        axios.get("api/posts", {
             headers: {
                 Authorization: `JWT ${localStorage.getItem('token')}`
             }}).then((response) => {

@@ -13,9 +13,9 @@ class PostFeed extends React.Component {
     this.props.dispatch(getPostThunk());
   }
   render() {
-    const userImage = "http://localhost:443/icon.png";
+    const userImage = "/templates/icon.png";
     let postList = "No Posts Found";
-    if(this.props.getPostReducer.data){
+   /* if(this.props.getPostReducer.data){
       postList = this.props.getPostReducer.data.map((e, i) => {
         let likeCheck = false;
         let likecount = 0;
@@ -33,7 +33,7 @@ class PostFeed extends React.Component {
           <Comment isLiked={likeCheck} likes={likecount} comments={e.comments} timestamp={e.time} />
         </div>);
       }).reverse();
-    }
+    }*/
 
     return (
         <div className="post-area" >

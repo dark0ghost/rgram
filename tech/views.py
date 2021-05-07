@@ -3,8 +3,10 @@ from django.db import IntegrityError
 from django.http import HttpRequest, HttpResponseRedirect
 from django.views.generic import DetailView
 from rest_framework import permissions, status
-from rest_framework.decorators import api_view
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication, SessionAuthentication
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
@@ -25,7 +27,6 @@ def add_post(request: HttpRequest):
 @api_view(['POST'])
 @login_required()
 def delete(request, pk):
-
     article = get_object_or_404(MomentModel.objects.all(), pk=pk)
     article.delete()
     return Response({
@@ -47,6 +48,7 @@ def add_like(request: HttpRequest, pk):
 @api_view(['GET'])
 def get_post(request: HttpRequest):
     serializer = MomentSerializer()
+
     return Response(serializer.data)
 
 
@@ -55,14 +57,17 @@ def current_user(request: HttpRequest):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 @login_required
 def get_user_photo(request: HttpRequest):
     pass
 
 
+
+
 class UserList(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (AllowAny,)
 
     @staticmethod
     def post(request):
@@ -89,5 +94,3 @@ class MomentModelDetailView(DetailView):
         data['number_of_likes'] = likes_connected.number_of_likes()
         data['post_is_liked'] = liked
         return data
-
-
