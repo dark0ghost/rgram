@@ -34,10 +34,13 @@ class Header extends React.Component {
     };
 
     componentDidMount() {
+        console.log(localStorage.getItem('token'))
         if (this.state.logged_in) {
             fetch('/api/current_user/', {
                 headers: {
-                    Authorization: `JWT ${localStorage.getItem('token')}`
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                    accept : 'application/json'
                 }
             })
                 .then(res => res.json())
