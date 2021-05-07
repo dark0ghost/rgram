@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'tech',
     'crispy_forms',
     'frontend',
-    'taggit',
     'dynamic_data_render'
 ]
 

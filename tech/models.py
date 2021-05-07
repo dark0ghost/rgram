@@ -1,11 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Model, CharField, DateTimeField, ImageField, ForeignKey, CASCADE, ManyToManyField, \
     OneToOneField
-from taggit.managers import TaggableManager
 
 
 class LowUserModel(AbstractUser):
-    avatar = ImageField(default='templates/deficon.png')
+    avatar = ImageField(default='templates/deficon.png', upload_to='templates/')
     name = CharField(max_length=120)
 
     class Meta:
@@ -16,14 +15,18 @@ class LowUserModel(AbstractUser):
         return self.username
 
 
+class TagModel(Model):
+    name = CharField(max_length=50, unique=True, )
+
+
 class MomentModel(Model):
     title = CharField(max_length=50)
     content = CharField(max_length=1200)
     user = ForeignKey(LowUserModel, on_delete=CASCADE)
     date = DateTimeField(auto_now=True)
-    image = ImageField()
-    tags = TaggableManager()
-    likes = ManyToManyField(LowUserModel, related_name='blogpost_like', default=None)
+    image = ImageField(upload_to='templates/')
+    tags = ManyToManyField(TagModel, default=None, null=True)
+    likes = ManyToManyField(LowUserModel, related_name='blogpost_like', default=None, null=True)
 
     def number_of_likes(self):
         return self.likes.count()

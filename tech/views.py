@@ -2,11 +2,10 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpRequest, HttpResponseRedirect
 from django.views.generic import DetailView
-from rest_framework import permissions, status
-from rest_framework.authentication import TokenAuthentication, BasicAuthentication, SessionAuthentication
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
@@ -47,8 +46,8 @@ def add_like(request: HttpRequest, pk):
 
 @api_view(['GET'])
 def get_post(request: HttpRequest):
-    serializer = MomentSerializer()
-
+    moment = MomentModel.objects.all()
+    serializer = MomentSerializer(moment, many=True)
     return Response(serializer.data)
 
 
@@ -56,14 +55,6 @@ def get_post(request: HttpRequest):
 def current_user(request: HttpRequest):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
-
-
-@api_view(['GET'])
-@login_required
-def get_user_photo(request: HttpRequest):
-    pass
-
-
 
 
 class UserList(APIView):
