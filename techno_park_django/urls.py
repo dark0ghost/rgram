@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
+from dynamic_data_render import urls as  dynamic_data_render_urls
 from tech import urls as tech_url
+from techno_park_django.views import send_favicon
 
 urlpatterns = [
     path('local/admin/', admin.site.urls),
-    path("api/", include(tech_url.urlpatterns))
+    path("api/", include(tech_url.urlpatterns)),
+    path("templates/", include(dynamic_data_render_urls.urlpatterns)),
+    path("favicon.ico", send_favicon)
 ]
