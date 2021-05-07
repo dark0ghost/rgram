@@ -1,12 +1,19 @@
+from rest_framework.relations import StringRelatedField
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField, EmailField, ImageField
 from rest_framework_jwt.settings import api_settings
-from tech.models import MomentModel, LowUserModel
+from tech.models import MomentModel, LowUserModel, TagModel
 
 
 class UserSerializer(ModelSerializer):
     class Meta:
         model = LowUserModel
         fields = ('username', 'name', 'avatar')
+
+
+class TagSerializer(ModelSerializer):
+    class Meta:
+        model = TagModel
+        fields = ('name',)
 
 
 class UserSerializerWithToken(ModelSerializer):
@@ -43,9 +50,18 @@ class UserSerializerWithToken(ModelSerializer):
 
 
 class MomentSerializer(ModelSerializer):
+    user = StringRelatedField(many=False)
+    likes = StringRelatedField(many=True)
+    tags = StringRelatedField(many=True)
+
     class Meta:
         model = MomentModel
-        fields = ("title", "content", "user", "date", "image", "tags")
+        fields = '__all__'
 
     def create(self, validated_data):
+        tags_data = validated_data.pop('tags', [])
+        instance = self.Meta.model(**validated_data)
+        for i in tags_data:
+            name = TagModel.objects.get_or_create(name=i["name"])
+            instance.tags.add(name)
         return MomentModel.objects.create(**validated_data)

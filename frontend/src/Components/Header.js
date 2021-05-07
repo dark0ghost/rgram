@@ -34,7 +34,6 @@ class Header extends React.Component {
     };
 
     componentDidMount() {
-        console.log(localStorage.getItem('token'))
         if (this.state.logged_in) {
             fetch('/api/current_user/', {
                 headers: {
@@ -43,7 +42,12 @@ class Header extends React.Component {
                     accept : 'application/json'
                 }
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (res.status === 401 && window.location["pathname"] !== "/login"){
+                         return window.location = "/login"
+                    }
+                     return res.json()
+                })
                 .then(json => {
                     this.setState({ username: json.username, avatar: json.avatar, name: json.name, });
                 });
