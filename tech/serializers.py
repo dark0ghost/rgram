@@ -10,6 +10,12 @@ class UserSerializer(ModelSerializer):
         fields = ('username', 'name', 'avatar')
 
 
+class TagSerializer(ModelSerializer):
+    class Meta:
+        model = TagModel
+        fields = ('name',)
+
+
 class UserSerializerWithToken(ModelSerializer):
     token = SerializerMethodField(read_only=True)
     password = CharField(max_length=128,
@@ -59,21 +65,3 @@ class MomentSerializer(ModelSerializer):
             name = TagModel.objects.get_or_create(name=i["name"])
             instance.tags.add(name)
         return MomentModel.objects.create(**validated_data)
-
-
-class TagSerializer(ModelSerializer):
-    class Meta:
-        model = TagModel
-        fields = ('name',)
-        extra_kwargs = {
-            'name': {'validators': []},
-        }
-
-    def create(self, validated_data):
-        return self.Meta.model(**validated_data)
-
-    def to_representation(self, instance):
-        ret = super(TagSerializer, self).to_representation(instance)
-        data = dict()
-        data['name'] = ret['name']
-        return data

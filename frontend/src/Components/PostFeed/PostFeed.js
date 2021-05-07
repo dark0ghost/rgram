@@ -15,6 +15,22 @@ class PostFeed extends React.Component {
   render() {
     const userImage = "/templates/icon.png";
     let postList = "No Posts Found";
+    if(this.props.getPostReducer.data) {
+      postList = this.props.getPostReducer.data.map((e, i) => {
+      let likeCheck = false;
+      let likecount = e.likes.count
+
+      return (<div key={i} className="post">
+        <div className="caption">
+          <img  src="/templates/icon.png" alt="dp" className="user" />
+          <h4 className="caption-text">{e.content}</h4>
+        </div>
+        <img onDoubleClick={() => {console.log("aa"); likeCheck = true } } src={e.image} alt="Post" className="post-image" />
+      </div>);
+    }).reverse();
+    }
+    //<Comment isLiked={likeCheck} likes={likecount}  comments={e.comments} timestamp={e.time}
+
    /* if(this.props.getPostReducer.data){
       postList = this.props.getPostReducer.data.map((e, i) => {
         let likeCheck = false;
