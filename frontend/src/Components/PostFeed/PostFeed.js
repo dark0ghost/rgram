@@ -12,6 +12,18 @@ class PostFeed extends React.Component {
   componentDidMount() {
     this.props.dispatch(getPostThunk());
   }
+
+  render_tags(e){
+    if(!e.tags){
+      var tags = ""
+      for (const tagsKey in e.tags) {
+         tags+= "<a href={"/tags/" + tagsKey}>#{tagsKey}</a>"
+      }
+      console.log(tags)
+      return <div> {tags}</div>
+    }
+    return  <div> 1</div>
+  }
   render() {
     const userImage = "/templates/icon.png";
     let postList = "No Posts Found";
@@ -22,10 +34,12 @@ class PostFeed extends React.Component {
 
       return (<div key={i} className="post">
         <div className="caption">
-          <img  src="/templates/icon.png" alt="dp" className="user" />
-          <h4 className="caption-text">{e.content}</h4>
+          <img  src="/templates/icon.jpg" alt="dp" className="user" />
+          <h4 className="caption-text">{e.title}</h4>
         </div>
         <img onDoubleClick={() => {console.log("aa"); likeCheck = true } } src={e.image} alt="Post" className="post-image" />
+        <h4 className="caption-text">{e.user}: {e.content}</h4>
+        <this.render_tags e={e} />
       </div>);
     }).reverse();
     }

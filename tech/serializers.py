@@ -24,7 +24,7 @@ class UserSerializerWithToken(ModelSerializer):
     email = EmailField(write_only=True)
     username = CharField()
     name = CharField()
-    avatar = ImageField(use_url=True)
+    avatar = ImageField(use_url=True, default='templates/deficon.png')
 
     @staticmethod
     def get_token(obj):
