@@ -26,10 +26,8 @@ export const getPostThunk = () => {
             headers: {
                 Authorization: `JWT ${localStorage.getItem('token')}`
             }}).then((response) => {
-            console.log(response.data);
             dispatch(get_Post_Success(response.data));            
         }).catch((error) => {
-            console.log('error: ', error);
             dispatch(get_Post_Error());            
         })
     }
