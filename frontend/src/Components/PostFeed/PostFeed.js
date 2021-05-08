@@ -12,20 +12,28 @@ class PostFeed extends React.Component {
   componentDidMount() {
     this.props.dispatch(getPostThunk());
   }
+
   render() {
-    const userImage = "/templates/icon.png";
     let postList = "No Posts Found";
     if(this.props.getPostReducer.data) {
       postList = this.props.getPostReducer.data.map((e, i) => {
       let likeCheck = false;
       let likecount = e.likes.count
+        const items = []
+        e.tags.forEach(element => items.push(<a href={'/tags/' + element}>#{element} </a>))
+
 
       return (<div key={i} className="post">
         <div className="caption">
-          <img  src="/templates/icon.png" alt="dp" className="user" />
-          <h4 className="caption-text">{e.content}</h4>
+          <img  src={"http://localhost:4433" + e.user.avatar.replace("/nginx", '')} alt="dp" className="user" />
+          <h4 className="caption-text">{e.title}</h4>
         </div>
         <img onDoubleClick={() => {console.log("aa"); likeCheck = true } } src={e.image} alt="Post" className="post-image" />
+        <div className="caption">
+          <img  src={"http://localhost:4433" + e.user.avatar.replace("/nginx", '')} alt="dp" className="user" />
+          <h4 className="caption-text">{e.user.name}: {e.content}  </h4>
+        </div>
+        <div>{items}</div>
       </div>);
     }).reverse();
     }

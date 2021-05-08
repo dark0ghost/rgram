@@ -24,7 +24,7 @@ class UserSerializerWithToken(ModelSerializer):
     email = EmailField(write_only=True)
     username = CharField()
     name = CharField()
-    avatar = ImageField(use_url=True)
+    avatar = ImageField(use_url=True, default='templates/deficon.png')
 
     @staticmethod
     def get_token(obj):
@@ -50,9 +50,12 @@ class UserSerializerWithToken(ModelSerializer):
 
 
 class MomentSerializer(ModelSerializer):
-    user = StringRelatedField(many=False)
+    user = SerializerMethodField()
     likes = StringRelatedField(many=True)
     tags = StringRelatedField(many=True)
+
+    def get_user(self, obj):
+        return UserSerializer(obj.user).data
 
     class Meta:
         model = MomentModel
