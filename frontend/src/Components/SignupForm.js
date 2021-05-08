@@ -37,6 +37,7 @@ class SignupForm extends React.Component {
                 console.log(json)
                 if(Object.keys(json).length){
                 localStorage.setItem('token', json.token);
+                localStorage.setItem('avatar', json.avatar);
                 this.setState({
                     logged_in: true,
                     name: json.name,

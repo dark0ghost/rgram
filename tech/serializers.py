@@ -50,9 +50,12 @@ class UserSerializerWithToken(ModelSerializer):
 
 
 class MomentSerializer(ModelSerializer):
-    user = StringRelatedField(many=False)
+    user = SerializerMethodField()
     likes = StringRelatedField(many=True)
     tags = StringRelatedField(many=True)
+
+    def get_user(self, obj):
+        return UserSerializer(obj.user).data
 
     class Meta:
         model = MomentModel

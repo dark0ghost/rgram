@@ -13,33 +13,27 @@ class PostFeed extends React.Component {
     this.props.dispatch(getPostThunk());
   }
 
-  render_tags(e){
-    if(!e.tags){
-      var tags = ""
-      for (const tagsKey in e.tags) {
-         tags+= "<a href={"/tags/" + tagsKey}>#{tagsKey}</a>"
-      }
-      console.log(tags)
-      return <div> {tags}</div>
-    }
-    return  <div> 1</div>
-  }
   render() {
-    const userImage = "/templates/icon.png";
     let postList = "No Posts Found";
     if(this.props.getPostReducer.data) {
       postList = this.props.getPostReducer.data.map((e, i) => {
       let likeCheck = false;
       let likecount = e.likes.count
+        const items = []
+        e.tags.forEach(element => items.push(<a href={'/tags/' + element}>#{element} </a>))
+
 
       return (<div key={i} className="post">
         <div className="caption">
-          <img  src="/templates/icon.jpg" alt="dp" className="user" />
+          <img  src={"http://localhost:4433" + e.user.avatar.replace("/nginx", '')} alt="dp" className="user" />
           <h4 className="caption-text">{e.title}</h4>
         </div>
         <img onDoubleClick={() => {console.log("aa"); likeCheck = true } } src={e.image} alt="Post" className="post-image" />
-        <h4 className="caption-text">{e.user}: {e.content}</h4>
-        <this.render_tags e={e} />
+        <div className="caption">
+          <img  src={"http://localhost:4433" + e.user.avatar.replace("/nginx", '')} alt="dp" className="user" />
+          <h4 className="caption-text">{e.user.name}: {e.content}  </h4>
+        </div>
+        <div>{items}</div>
       </div>);
     }).reverse();
     }
