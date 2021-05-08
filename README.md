@@ -20,10 +20,11 @@
 Комментарий – содержание, автор, дата написания
 Подписка - автор, подписчик, дата подписки
 Лайк - автор, момент/комментарий, дата создания
-Теги - момент, название```
+Теги - момент, название
+```
 
 
 ## Главная страница 
-<img src="https://github.com/dark0ghost/rgram/tree/main/nginx/rgram.png">
+<img href="https://github.com/dark0ghost/rgram/tree/main/nginx/rgram.png">
 
 
