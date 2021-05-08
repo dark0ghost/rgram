@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from 'react-redux';
 import SignupForm from "./Components/SignupForm";
 import LoginForm from "./Components/LoginUserForm";
+import Tag from "./Components/PostFeed/Tag";
 
 class App extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class App extends Component {
             <Route exact path="/" component={PostFeed} />
             <Route exact path="/signup" component={SignupForm} />
             <Route exact path="/login"  component={LoginForm} />
+            <Route exact path="/tags/:name" component={Tag} />
         </div>
       </Router>
     );

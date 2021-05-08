@@ -45,6 +45,14 @@ def add_like(request: HttpRequest, pk):
 
 
 @api_view(['GET'])
+def get_post_with_tag(request: HttpRequest, name):
+    print(name)
+    all_moment = MomentModel.objects.filter(tags__name=name)
+    serializer = MomentSerializer(all_moment, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def get_post(request: HttpRequest):
     moment = MomentModel.objects.all()
     serializer = MomentSerializer(moment, many=True)
@@ -67,9 +75,7 @@ class UserList(APIView):
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-            print(serializer.errors)
         except IntegrityError as e:
-            print(e)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
