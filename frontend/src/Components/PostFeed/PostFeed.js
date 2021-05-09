@@ -21,11 +21,21 @@ class PostFeed extends React.Component {
       let likecount = e.likes.count
         const items = []
         e.tags.forEach(element => items.push(<a href={'/tags/' + element}>#{element} </a>))
+        let avatar
+        try {
+          if (e.user.avatar.includes("nginx")) {
+            avatar = "http://localhost:4433" + e.user.avatar.replace("/nginx", "");
+          } else {
+            avatar = e.user.avatar
+          }
+        }catch (e) {
+          avatar = e.user.avatar
+        }
 
 
       return (<div key={i} className="post">
         <div className="caption">
-          <img  src={"http://localhost:4433" + e.user.avatar.replace("/nginx", '')} alt="dp" className="user" />
+          <img  src={avatar} alt="dp" className="user" />
           <h4 className="caption-text">{e.title}</h4>
         </div>
         <img onDoubleClick={() => {console.log("aa"); likeCheck = true } } src={e.image} alt="Post" className="post-image" />
