@@ -1,3 +1,4 @@
+from rest_framework.fields import ReadOnlyField
 from rest_framework.relations import StringRelatedField
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField, EmailField, ImageField
 from rest_framework_jwt.settings import api_settings
@@ -11,6 +12,9 @@ class UserSerializer(ModelSerializer):
 
 
 class TagSerializer(ModelSerializer):
+
+    name = CharField(max_length=50)
+
     class Meta:
         model = TagModel
         fields = ('name',)
@@ -51,8 +55,8 @@ class UserSerializerWithToken(ModelSerializer):
 
 class MomentSerializer(ModelSerializer):
     user = SerializerMethodField()
-    likes = StringRelatedField(many=True)
-    tags = StringRelatedField(many=True)
+    likes = UserSerializer(many=True, default=[])
+    tags = TagSerializer(many=True, default={})
 
     def get_user(self, obj):
         return UserSerializer(obj.user).data

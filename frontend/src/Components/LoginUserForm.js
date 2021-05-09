@@ -42,6 +42,7 @@ class LoginForm extends React.Component {
                     });
                     localStorage.setItem('token', json.token);
                     localStorage.setItem('avatar', json.user.avatar);
+                    localStorage.setItem('username', json.user.username);
                     window.location = "/"
                     return
                 }catch (e) {

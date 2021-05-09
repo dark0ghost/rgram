@@ -4,7 +4,9 @@ from django.http import HttpRequest, HttpResponseRedirect
 from django.views.generic import DetailView
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -17,9 +19,11 @@ from tech.serializers import UserSerializer, UserSerializerWithToken, MomentSeri
 @api_view(['POST'])
 @login_required()
 def add_post(request: HttpRequest):
+    print(request.data)
     if (serializer := MomentSerializer(data=request.data)).is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -92,3 +96,20 @@ class MomentModelDetailView(DetailView):
         data['number_of_likes'] = likes_connected.number_of_likes()
         data['post_is_liked'] = liked
         return data
+
+
+class CreateMomentAPIView(APIView):
+    serializer_class = MomentSerializer
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
+
+    def post(self, request, format=None, *args, **kwargs):
+        print(request.data)
+        if (serializer := self.serializer_class(data=request.data)).is_valid():
+            try:
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+            except ValidationError as e:
+                print(e, "  sadasd")
+                return Response(e.message, status=status.HTTP_400_BAD_REQUEST)
+        print(serializer.errors, "  sadasd")
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -33,7 +33,7 @@ class Tag extends Component {
                 let likeCheck = false;
                // let likecount = e.likes.count
                 const items = []
-                e.tags.forEach(element => items.push(<a href={'/tags/' + element}>#{element} </a>))
+                e.tags.forEach(element => items.push(<a href={'/tags/' + element.name}>#{element.name} </a>))
                 let avatar  = e.user.avatar;
                 try {
                     if (e.user.avatar.includes("nginx")) {
