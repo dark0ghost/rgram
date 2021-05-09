@@ -1,6 +1,7 @@
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import React from 'react';
+import  "./Login.css";
 
 class LoginForm extends React.Component {
     state = {
@@ -52,30 +53,42 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={e => this.handle_login(e, this.state)}>
-                <h4>Log In</h4>
-                <label htmlFor="username">Username</label>
-                <input
-                    type="text"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.handle_change}
-                />
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.handle_change}
-                />
-                <input type="submit" />
-            </form>
+            <div id="wrapper">
+                <div className ="main-content">
+                    <div className ="l-part">
+                        <form onSubmit={e => this.handle_login(e, this.state)}>
+                        <input
+                            type="text"
+                            name="username"
+                            value={this.state.username}
+                            onChange={this.handle_change}
+                            placeholder="Username"
+                            className="input-1" />
+                        <div className ="overlap-text">
+                            <input type="password"
+                                   name="password"
+                                   value={this.state.password}
+                                   onChange={this.handle_change}
+                                   placeholder="Password"
+                                   className ="input-2" />
+                            <a href="#">Forgot?</a>
+                        </div>
+                        <input type="submit" value="Log in" className="btn" />
+                        </form>
+                    </div>
+                </div>
+                <div className="sub-content">
+                    <div className="s-part">
+                        Don't have an account?<a href="#">Sign up</a>
+                    </div>
+                </div>
+            </div>
+
         );
     }
 }
-
-
 const mapStateToProps = (state) => {
     return state;
 }
+
 export default withRouter(connect(mapStateToProps)(LoginForm));
