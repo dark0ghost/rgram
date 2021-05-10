@@ -1,7 +1,7 @@
-from rest_framework.fields import ReadOnlyField
-from rest_framework.relations import StringRelatedField
+from rest_framework.relations import StringRelatedField, PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField, EmailField, ImageField
 from rest_framework_jwt.settings import api_settings
+
 from tech.models import MomentModel, LowUserModel, TagModel
 
 
@@ -12,7 +12,6 @@ class UserSerializer(ModelSerializer):
 
 
 class TagSerializer(ModelSerializer):
-
     name = CharField(max_length=50)
 
     class Meta:
@@ -54,11 +53,12 @@ class UserSerializerWithToken(ModelSerializer):
 
 
 class MomentSerializer(ModelSerializer):
-    user = SerializerMethodField()
-    likes = UserSerializer(many=True, default=[])
-    tags = TagSerializer(many=True, default={})
+    user = UserSerializer()
+    likes = UserSerializer(many=True, default=[], read_only=True)
+    tags = TagSerializer(many=True, default={}, read_only=True)
 
-    def get_user(self, obj):
+    @staticmethod
+    def get_user(obj):
         return UserSerializer(obj.user).data
 
     class Meta:
@@ -66,9 +66,21 @@ class MomentSerializer(ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
+        print(validated_data)
         tags_data = validated_data.pop('tags', [])
+        validated_data.pop('likes', [])
         instance = self.Meta.model(**validated_data)
+        instance.save()
         for i in tags_data:
-            name = TagModel.objects.get_or_create(name=i["name"])
-            instance.tags.add(name)
-        return MomentModel.objects.create(**validated_data)
+            name = instance.tags.get_or_create(name=i["name"])
+            print(name)
+            instance.tags.add(name[0].id)
+        return instance
+
+
+class UserSerializerWithMoment(ModelSerializer):
+    moments = PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = LowUserModel
+        fields = '__all__'

@@ -16,7 +16,7 @@ class LowUserModel(AbstractUser):
 
 
 class TagModel(Model):
-    name = CharField(max_length=50, unique=True, )
+    name = CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.name
@@ -25,7 +25,7 @@ class TagModel(Model):
 class MomentModel(Model):
     title = CharField(max_length=50)
     content = CharField(max_length=1200)
-    user = ForeignKey(LowUserModel, on_delete=CASCADE)
+    user = ForeignKey(LowUserModel,related_name='moment', on_delete=CASCADE)
     date = DateTimeField(auto_now=True)
     image = ImageField(upload_to='templates/')
     tags = ManyToManyField(TagModel, default=None, related_name='MomentModel_tags')
