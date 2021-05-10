@@ -1,34 +1,17 @@
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpRequest, HttpResponseRedirect
-from django.views.generic import DetailView
 from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import AllowAny
+from rest_framework.generics import get_object_or_404, RetrieveUpdateDestroyAPIView, ListCreateAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
-from tech.models import MomentModel
-from tech.serializers import UserSerializer, UserSerializerWithToken, MomentSerializer
-
-
-@api_view(['POST'])
-@login_required()
-def add_post(request: HttpRequest):
-    req = request.data.dict()
-    buffer = []
-    for i in req["tags"].split():
-        buffer.append({"name": i})
-    req["tags"] = buffer
-    req["user"] = {"username": req["user"]}
-    if (serializer := MomentSerializer(request.user, data=req)).is_valid():
-        serializer.save()
-        print(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    print(serializer.errors)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from tech.models import MomentModel, CommentsModel, TagModel
+from tech.serializers import UserSerializer, UserSerializerWithToken, MomentSerializer, MomentsWriteSerializer, \
+    CommentSerializer, TagSerializer
 
 
 @api_view(['POST'])
@@ -60,9 +43,23 @@ def get_post_with_tag(request: HttpRequest, name):
 
 
 @api_view(['GET'])
+def create_tag(request: HttpRequest, name):
+    que = TagModel.objects.get_or_create(name=name)
+    serializer = TagSerializer(que[0])
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
 def get_post(request: HttpRequest):
     moment = MomentModel.objects.all()
     serializer = MomentSerializer(moment, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def comments_with_id_post(request: HttpRequest, pk):
+    all_comments = CommentsModel.objects.filter(moment_id=pk)
+    serializer = CommentSerializer(all_comments, many=True)
     return Response(serializer.data)
 
 
@@ -86,16 +83,25 @@ class UserList(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class MomentModelDetailView(DetailView):
-    model = MomentModel
+class MomentDetail(ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = MomentModel.objects.all()
+    serializer_class = MomentsWriteSerializer
 
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
-        likes_connected = get_object_or_404(MomentModel, id=self.kwargs['pk'])
-        liked = False
-        if likes_connected.likes.filter(id=self.request.user.id).exists():
-            liked = True
-        data['number_of_likes'] = likes_connected.number_of_likes()
-        data['post_is_liked'] = liked
-        return data
+
+class CommentList(ListCreateAPIView):
+    queryset = CommentsModel.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class CommentDetail(RetrieveUpdateDestroyAPIView):
+    queryset = CommentsModel.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]

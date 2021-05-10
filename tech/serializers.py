@@ -1,8 +1,10 @@
+from django.db.models import ManyToManyField
+from rest_framework.fields import ReadOnlyField
 from rest_framework.relations import StringRelatedField, PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField, EmailField, ImageField
 from rest_framework_jwt.settings import api_settings
 
-from tech.models import MomentModel, LowUserModel, TagModel
+from tech.models import MomentModel, LowUserModel, TagModel, CommentsModel
 
 
 class UserSerializer(ModelSerializer):
@@ -16,7 +18,7 @@ class TagSerializer(ModelSerializer):
 
     class Meta:
         model = TagModel
-        fields = ('name',)
+        fields = ('name',"id")
 
 
 class UserSerializerWithToken(ModelSerializer):
@@ -53,9 +55,10 @@ class UserSerializerWithToken(ModelSerializer):
 
 
 class MomentSerializer(ModelSerializer):
-    user = UserSerializer()
+    owner = UserSerializer()
     likes = UserSerializer(many=True, default=[], read_only=True)
     tags = TagSerializer(many=True, default={}, read_only=True)
+    comments = PrimaryKeyRelatedField(many=True, read_only=True)
 
     @staticmethod
     def get_user(obj):
@@ -65,22 +68,33 @@ class MomentSerializer(ModelSerializer):
         model = MomentModel
         fields = '__all__'
 
-    def create(self, validated_data):
-        print(validated_data)
-        tags_data = validated_data.pop('tags', [])
-        validated_data.pop('likes', [])
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        for i in tags_data:
-            name = instance.tags.get_or_create(name=i["name"])
-            print(name)
-            instance.tags.add(name[0].id)
-        return instance
+
+class MomentsWriteSerializer(ModelSerializer):
+    user = ReadOnlyField(source='owner.username')
+    comments = PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = MomentModel
+        fields = '__all__'
 
 
 class UserSerializerWithMoment(ModelSerializer):
     moments = PrimaryKeyRelatedField(many=True, read_only=True)
+    comments = PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = LowUserModel
         fields = '__all__'
+
+
+class CommentSerializer(ModelSerializer):
+    owner = ReadOnlyField(source='owner.username')
+
+    class Meta:
+        model = CommentsModel
+        fields = ['id', 'text', 'owner', 'moment']
+
+
+"""class TagWriteSerializerWithMoment(ModelSerializer):
+    name = CharField(max_length=100, blank=False, default='')
+    moment = ManyToManyField(MomentModel, related_name='tag', blank=True)"""

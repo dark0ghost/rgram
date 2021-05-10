@@ -21,24 +21,34 @@ const add_Post_Error = () => {
 export const addPostThunk = (input, history) => {
     return (dispatch) => {
         dispatch(add_Post_Started());
+        let teg_id = []
+        input.tags.split(" ").forEach(element =>{
+            console.log(element)
+           fetch("/api/create_tag/" + element, {
+                    headers: {
+                        Authorization: `JWT ${localStorage.getItem('token')}`}
+                }
+            ).then(response => teg_id.push(response.json().id))
+
+        })
 
         let form = new FormData()
         form.append("title", input.title)
         form.append("image", input.image)
-        form.append( "user", input.user)
+        form.append( "owner", input.user)
         form.append("content", input.content)
-        form.append("tags" , input.tags)
+        form.append("tags" ,1)
 
        axios.post("/api/create_post/",form, {
            headers: {
                Authorization: `JWT ${localStorage.getItem('token')}`}
                 }
         ).then((response) => {
-            console.log(response.data, " sdasf")
+            console.log(response, " sdasf")
             dispatch(add_Post_Success());  
             history.push("/")          
         }).catch((error) => {
-           console.log(error);
+           //console.log(error);
             dispatch(add_Post_Error());            
         })
     }
