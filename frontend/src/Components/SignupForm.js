@@ -57,38 +57,53 @@ class SignupForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={e => this.handle_signup(e, this.state)}>
-                <h4>Sign Up</h4>
-                <label htmlFor="name">Username</label>
-                <input
-                    type="text"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.handle_change}
-                />
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.handle_change}
-                />
-                <label htmlFor="email">Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handle_change}
-                />
-                <label htmlFor="username">Short name </label>
-                <input
-                    type="username"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.handle_change}
-                />
-                <input type="submit" />
-            </form>
+
+        <div id="wrapper">
+            <div className ="main-content">
+                <div className ="l-part">
+                    <form onSubmit={e => this.handle_signup(e, this.state)}>
+                        <h4>Sign Up</h4>
+                        <label htmlFor="name">Username</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={this.state.name}
+                            onChange={this.handle_change}
+                            placeholder="Username"
+                            className="input-1"
+                        />
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            value={this.state.password}
+                            onChange={this.handle_change}
+                            placeholder="Password"
+                            className="input-2"
+                        />
+                        <label htmlFor="email">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={this.state.email}
+                            onChange={this.handle_change}
+                            placeholder="email"
+                            className="input-1"
+                        />
+                        <label htmlFor="username">Short name </label>
+                        <input
+                            type="username"
+                            name="username"
+                            value={this.state.username}
+                            onChange={this.handle_change}
+                            placeholder="short name"
+                            className="input-1"
+                        />
+                        <input type="submit" value="Sing Up" className="btn" />
+                    </form>
+                </div>
+            </div>
+        </div>
         );
     }
 }
