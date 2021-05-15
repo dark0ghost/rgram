@@ -24,5 +24,6 @@ urlpatterns = [
     path('local/admin/', admin.site.urls),
     path("api/", include(tech_url.urlpatterns)),
     path("templates/", include(dynamic_data_render_urls.urlpatterns)),
-    path("favicon.ico", send_favicon)
+    path("favicon.ico", send_favicon),
+    path("", send_favicon)
 ]

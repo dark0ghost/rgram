@@ -20,16 +20,16 @@ class PostFeed extends React.Component {
       let likeCheck = false;
       let likecount = e.likes.count
         const items = []
-        e.tags.forEach(element => items.push(<a href={'/tags/' + element}>#{element} </a>))
+        e.tags.forEach(element => items.push(<a href={'/tags/' + element.name}>#{element.name} </a>))
         let avatar
         try {
-          if (e.user.avatar.includes("nginx")) {
-            avatar = "http://localhost:4433" + e.user.avatar.replace("/nginx", "");
+          if (e.owner.avatar.includes("nginx")) {
+            avatar = "http://localhost:4433" + e.owner.avatar.replace("/nginx", "");
           } else {
-            avatar = e.user.avatar
+            avatar = e.owner.avatar
           }
         }catch (e) {
-          avatar = e.user.avatar
+          avatar = e.owner.avatar
         }
 
 
@@ -40,8 +40,8 @@ class PostFeed extends React.Component {
         </div>
         <img onDoubleClick={() => {console.log("aa"); likeCheck = true } } src={e.image} alt="Post" className="post-image" />
         <div className="caption">
-          <img  src={"http://localhost:4433" + e.user.avatar.replace("/nginx", '')} alt="dp" className="user" />
-          <h4 className="caption-text">{e.user.name}: {e.content}  </h4>
+          <img  src={"http://localhost:4433" + e.owner.avatar.replace("/nginx", '')} alt="dp" className="user" />
+          <h4 className="caption-text">{e.owner.name}: {e.content}  </h4>
         </div>
         <div>{items}</div>
       </div>);

@@ -25,6 +25,6 @@
 
 
 ## Главная страница 
-<img src="https://github.com/dark0ghost/rgram/blob/main/nginx/rgram.png">
+<img src="https://github.com/dark0ghost/rgram/blob/main/nginx/rgram.png" alt="main menu">
 
 

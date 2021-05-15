@@ -1,19 +1,23 @@
-from rest_framework.relations import StringRelatedField
+from rest_framework.fields import ReadOnlyField
+from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField, EmailField, ImageField
 from rest_framework_jwt.settings import api_settings
-from tech.models import MomentModel, LowUserModel, TagModel
+
+from tech.models import MomentModel, LowUserModel, TagModel, CommentsModel
 
 
 class UserSerializer(ModelSerializer):
     class Meta:
         model = LowUserModel
-        fields = ('username', 'name', 'avatar')
+        fields = ('id', 'username', 'name', 'avatar')
 
 
 class TagSerializer(ModelSerializer):
+    name = CharField(max_length=50)
+
     class Meta:
         model = TagModel
-        fields = ('name',)
+        fields = ('name', "id")
 
 
 class UserSerializerWithToken(ModelSerializer):
@@ -50,21 +54,48 @@ class UserSerializerWithToken(ModelSerializer):
 
 
 class MomentSerializer(ModelSerializer):
-    user = SerializerMethodField()
-    likes = StringRelatedField(many=True)
-    tags = StringRelatedField(many=True)
+    owner = UserSerializer()
+    likes = UserSerializer(many=True, default=[], read_only=True)
+    tags = TagSerializer(many=True, default={}, read_only=True)
+    comments = PrimaryKeyRelatedField(many=True, read_only=True)
 
-    def get_user(self, obj):
+    @staticmethod
+    def get_user(obj):
         return UserSerializer(obj.user).data
 
     class Meta:
         model = MomentModel
         fields = '__all__'
 
-    def create(self, validated_data):
-        tags_data = validated_data.pop('tags', [])
-        instance = self.Meta.model(**validated_data)
-        for i in tags_data:
-            name = TagModel.objects.get_or_create(name=i["name"])
-            instance.tags.add(name)
-        return MomentModel.objects.create(**validated_data)
+
+class MomentsWriteSerializer(ModelSerializer):
+    user = ReadOnlyField(source='owner.username')
+    likes = UserSerializer(many=True, default=[], read_only=True)
+    comments = PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = MomentModel
+        fields = '__all__'
+
+
+class UserSerializerWithMoment(ModelSerializer):
+    moments = PrimaryKeyRelatedField(many=True, read_only=True)
+    comments = PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = LowUserModel
+        fields = '__all__'
+
+
+class CommentSerializer(ModelSerializer):
+    owner = ReadOnlyField(source='owner.username')
+
+    class Meta:
+        model = CommentsModel
+        fields = ['id', 'text', 'owner', 'moment']
+
+
+class TagWriteSerializerWithMoment(ModelSerializer):
+    class Meta:
+        model = TagModel
+        fields = '__all__'
