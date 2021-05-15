@@ -32,3 +32,7 @@
 
 ## Страница авторизации
 <img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/login.png" alt="login panel">
+
+
+## Страница регистрации
+<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/signup.png" alt="sign up panel">
