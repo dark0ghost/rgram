@@ -74,7 +74,7 @@ class LoginForm extends React.Component {
                                    onChange={this.handle_change}
                                    placeholder="Password"
                                    className ="input-2" />
-                            <a href="#">Forgot?</a>
+                            <a href="/">Forgot?</a>
                         </div>
                         <input type="submit" value="Log in" className="btn" />
                         </form>
@@ -82,7 +82,7 @@ class LoginForm extends React.Component {
                 </div>
                 <div className="sub-content">
                     <div className="s-part">
-                        Don't have an account?<a href="#">Sign up</a>
+                        Don't have an account?<a href="/signup">Sign up</a>
                     </div>
                 </div>
             </div>

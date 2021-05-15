@@ -25,6 +25,10 @@
 
 
 ## Главная страница 
-<img src="https://github.com/dark0ghost/rgram/blob/main/nginx/rgram.png" alt="main menu">
+<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/rgram.png" alt="main menu">
 
+##  Панель добавления постов
+<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/addpost.png" alt="add moment">
 
+## Страница авторизации
+<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/login.png" alt="login panel">
