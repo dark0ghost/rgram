@@ -41,7 +41,7 @@ class AddPost extends React.Component {
     const input = {
       image: this.state.image,
       title: this.state.title,
-      user: localStorage.getItem('username'),
+      user: localStorage.getItem('id_user'),
       content: this.state.content,
       tags: this.state.tags
     };

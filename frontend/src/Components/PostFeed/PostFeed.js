@@ -20,7 +20,6 @@ class PostFeed extends React.Component {
       let likeCheck = false;
       let likecount = e.likes.count
         const items = []
-        console.log(e.tags)
         e.tags.forEach(element => items.push(<a href={'/tags/' + element.name}>#{element.name} </a>))
         let avatar
         try {

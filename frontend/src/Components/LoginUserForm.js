@@ -34,6 +34,7 @@ class LoginForm extends React.Component {
             .then(res =>res.json())
             .then(json => {
                 console.log(json)
+                console.log(json.id);
                 try {
                     this.setState({
                         logged_in: true,
@@ -43,6 +44,7 @@ class LoginForm extends React.Component {
                     localStorage.setItem('token', json.token);
                     localStorage.setItem('avatar', json.user.avatar);
                     localStorage.setItem('username', json.user.username);
+                    localStorage.setItem('id_user', json.user.id);
                     window.location = "/"
                     return
                 }catch (e) {

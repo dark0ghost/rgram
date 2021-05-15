@@ -1,6 +1,6 @@
 from django.db.models import ManyToManyField
 from rest_framework.fields import ReadOnlyField
-from rest_framework.relations import StringRelatedField, PrimaryKeyRelatedField
+from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField, EmailField, ImageField
 from rest_framework_jwt.settings import api_settings
 
@@ -10,7 +10,7 @@ from tech.models import MomentModel, LowUserModel, TagModel, CommentsModel
 class UserSerializer(ModelSerializer):
     class Meta:
         model = LowUserModel
-        fields = ('username', 'name', 'avatar')
+        fields = ('id', 'username', 'name', 'avatar')
 
 
 class TagSerializer(ModelSerializer):
@@ -18,7 +18,7 @@ class TagSerializer(ModelSerializer):
 
     class Meta:
         model = TagModel
-        fields = ('name',"id")
+        fields = ('name', "id")
 
 
 class UserSerializerWithToken(ModelSerializer):
@@ -71,7 +71,9 @@ class MomentSerializer(ModelSerializer):
 
 class MomentsWriteSerializer(ModelSerializer):
     user = ReadOnlyField(source='owner.username')
+    likes = UserSerializer(many=True, default=[], read_only=True)
     comments = PrimaryKeyRelatedField(many=True, read_only=True)
+    tags = ManyToManyField(TagModel, related_name='tag', blank=True)
 
     class Meta:
         model = MomentModel
