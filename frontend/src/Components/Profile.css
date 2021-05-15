@@ -1,5 +1,17 @@
-.set-font{
+.set:root {
     font-size: 10px;
+}
+.profile-logo{
+    height: 152px;
+    width: 152px;
+    margin: 20px;
+}
+
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 body {
@@ -41,11 +53,7 @@ img {
     overflow: hidden;
     clip: rect(1px, 1px, 1px, 1px);
 }
-.profile-logo{
-    height: 152px;
-    width: 152px;
-    margin: 20px;
-}
+
 
 .profile {
     padding: 5rem 0;
@@ -130,6 +138,8 @@ img {
     font-weight: 600;
 }
 
+
+
 .gallery {
     display: flex;
     flex-wrap: wrap;
@@ -202,7 +212,7 @@ img {
 }
 
 
-@media screen and (max-width: 40rem) {
+@media screen and (max-width: 10rem) {
     .profile {
         display: flex;
         flex-wrap: wrap;
@@ -283,6 +293,7 @@ img {
 }
 
 
+
 @keyframes loader {
     to {
         transform: rotate(360deg);
@@ -301,7 +312,7 @@ img {
     }
 
     .profile-image {
-        grid-row: 1 / -1;
+       grid-row: 1 / -1;
     }
 
     .gallery {
@@ -320,7 +331,7 @@ img {
         margin: 0;
     }
 
-    @media (max-width: 40rem) {
+    @media (max-width: 10rem) {
         .profile {
             grid-template-columns: auto 1fr;
             grid-row-gap: 1.5rem;

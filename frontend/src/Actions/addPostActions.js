@@ -18,37 +18,9 @@ const add_Post_Error = () => {
     });
 }
 
-const get_tag_id = (tags) =>{
-    let tag_id = []
-    tags.split(" ").forEach(element =>{
-        fetch("/api/create_tag/" + element, {
-                headers: {
-                    Authorization: `JWT ${localStorage.getItem('token')}`}
-            }
-        )
-            .then(response => response.json())
-            .then(json =>{
-                console.log(json.id)
-                tag_id.push(toString(json.id))
-            })
-
-    })
-    return tag_id
-}
-
 export const addPostThunk = (input, history) => {
     return (dispatch) => {
         dispatch(add_Post_Started());
-
-        const obj = {
-            "owner": input.user,
-            "title": input.title,
-            "content":  input.content,
-            "image":  input.image,
-            "tags":  get_tag_id(input.tags),
-        }
-        console.log(obj)
-
         let form = new FormData()
         form.append("title", input.title)
         form.append("image", input.image)
