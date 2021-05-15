@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import SignupForm from "./Components/SignupForm";
 import LoginForm from "./Components/LoginUserForm";
 import Tag from "./Components/PostFeed/Tag";
+import Profile from "./Components/Profile"
 
 class App extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class App extends Component {
             <Route exact path="/signup" component={SignupForm} />
             <Route exact path="/login"  component={LoginForm} />
             <Route exact path="/tags/:name" component={Tag} />
+            <Route exact path="/profile"  component={Profile} />
         </div>
       </Router>
     );
