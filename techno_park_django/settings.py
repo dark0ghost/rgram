@@ -88,6 +88,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'backup': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_db',
+        'USER': 'eventstracker',
+        'PASSWORD': 'A3dSA24Dctf2v4HE',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

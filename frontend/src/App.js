@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import SignupForm from "./Components/SignupForm";
 import LoginForm from "./Components/LoginUserForm";
 import Tag from "./Components/PostFeed/Tag";
-import Profile from "./Components/Profile"
+import Profile from "./Components/Profile";
 
 class App extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Header/>
+          <Header />
           {this.props.getPostReducer.loading && <div className="loader-div"><img src={loader} className="loader"  alt="loader" /></div> }
           {this.props.addPostReducer.loading && <div className="loader-div"><img src={loader} className="loader"  alt="loader" /></div> }
             <Route exact path="/add" component={AddPost} />
