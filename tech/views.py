@@ -88,22 +88,18 @@ class MomentDetail(ListCreateAPIView):
     queryset = MomentModel.objects.all()
     serializer_class = MomentsWriteSerializer
 
-    def perform_create(self, serializer):
-        if not serializer.is_valid():
-            print(serializer.errors)
-        serializer.save(owner=self.request.user)
-
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            print(serializer.errors)
+        data = request.data.dict()
+        tags = data.pop("tags", "")
+        data["tags"] = []
+        for i in tags.split(","):
+            data["tags"].append(TagModel.objects.get_or_create(name=i)[0].id)
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    def post(self, request, *args, **kwargs):
-        print(request.data.dict())
-        super().post(request, args, kwargs)
 
 
 class CommentList(ListCreateAPIView):

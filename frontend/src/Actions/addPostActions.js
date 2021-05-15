@@ -54,7 +54,7 @@ export const addPostThunk = (input, history) => {
         form.append("image", input.image)
         form.append( "owner",  input.user)
         form.append("content", input.content)
-        form.append("tags" , get_tag_id(input.tags))
+        form.append("tags" , input.tags.split(" "))
 
        axios.post("/api/create_post/",form, {
            headers: {
