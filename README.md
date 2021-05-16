@@ -39,3 +39,4 @@
 
 ## Профиль
 <img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/profile.png" alt="profile">
+<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/profile-1.png" alt="profile  1">
