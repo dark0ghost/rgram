@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import "./Profile.css"
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
-import {getPostThunk} from "../Actions/getPostActions";
 
 class Profile extends Component{
     constructor(props){

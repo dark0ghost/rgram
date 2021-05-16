@@ -12,7 +12,7 @@ urlpatterns = [
     path("user_post/<username>", get_post_with_username),
     path("post_with_id/<id_post>", get_post_with_id),
     path("create_post/", MomentDetail.as_view()),
-    path("add_like", add_like),
+    path("add_like/<int:pk>", add_like),
     path("tag/<name>", get_post_with_tag),
     path("create_tag/<name>",  create_tag),
     path('comments/', CommentList.as_view()),
