@@ -64,6 +64,20 @@ def comments_with_id_post(request: HttpRequest, pk):
 
 
 @api_view(['GET'])
+def get_post_with_username(request: HttpRequest, username):
+    all_moment = MomentModel.objects.filter(owner__username=username)
+    serializer = MomentSerializer(all_moment, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_post_with_id(request: HttpRequest, id_post):
+    all_moment = MomentModel.objects.filter(id=id_post)
+    serializer = MomentSerializer(all_moment, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def current_user(request: HttpRequest):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)

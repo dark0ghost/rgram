@@ -46,7 +46,7 @@ class LoginForm extends React.Component {
                     localStorage.setItem('username', json.user.username);
                     localStorage.setItem('id_user', json.user.id);
                     window.location = "/"
-                    return
+
                 }catch (e) {
                     alert(json.non_field_errors[0])
                 }
@@ -66,17 +66,17 @@ class LoginForm extends React.Component {
                             value={this.state.username}
                             onChange={this.handle_change}
                             placeholder="Username"
-                            className="input-1" />
+                            className="input-1" required={true}/>
                         <div className ="overlap-text">
                             <input type="password"
                                    name="password"
                                    value={this.state.password}
                                    onChange={this.handle_change}
                                    placeholder="Password"
-                                   className ="input-2" />
+                                   className ="input-2" required={true}/>
                             <a href="/">Forgot?</a>
                         </div>
-                        <input type="submit" value="Log in" className="btn" />
+                        <input type="submit" value="Log in" />
                         </form>
                     </div>
                 </div>

@@ -8,11 +8,7 @@
 }
 
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
+
 
 body {
     font-family: "Open Sans", Arial, sans-serif;
