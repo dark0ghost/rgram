@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
-from tech.models import MomentModel, CommentsModel, TagModel
+from tech.models import MomentModel, CommentsModel, TagModel, LowUserModel
 from tech.serializers import UserSerializer, UserSerializerWithToken, MomentSerializer, MomentsWriteSerializer, \
     CommentSerializer, TagSerializer
 
@@ -25,14 +25,14 @@ def delete(request, pk):
 
 
 @api_view(['POST', 'GET'])
-@login_required()
+@login_required
 def add_like(request: HttpRequest, pk):
-    post = get_object_or_404(MomentModel, id=request.POST.get('momentmodel_id'))
+    post = get_object_or_404(MomentModel, id=pk)
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
     else:
         post.likes.add(request.user)
-    return HttpResponseRedirect(reverse('momentmodel-detail', args=[str(pk)]))
+    return Response(status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET'])

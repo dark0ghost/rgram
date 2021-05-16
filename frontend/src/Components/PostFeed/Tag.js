@@ -1,5 +1,9 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import axios from "axios";
+import Checkbox from "@material-ui/core/Checkbox";
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import Favorite from "@material-ui/icons/Favorite";
 
 
 class Tag extends Component {
@@ -7,7 +11,8 @@ class Tag extends Component {
     constructor(props){
         super(props);
         this.state = {
-            data_render: {}
+            data_render: {},
+            username: localStorage.getItem("username")
         }
     }
 
@@ -23,18 +28,47 @@ class Tag extends Component {
                this.setState({data_render: json})
            })
    }
+    sendLike = (id_post) =>{
+        axios.post("/api/add_like/" + id_post,{}, {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`
+                }
+            }
+        )
+    }
 
+    getRenderLike = (likecounts, likeCheck, id_post) =>{
+        console.log(likeCheck)
+        if (!likeCheck) {
+            return (
+                <div>
+                    <Checkbox icon={<FavoriteBorder/>}
+                              checkedIcon={<Favorite/>}
+                              name="checkedH"
+                              onChange={(event) => this.sendLike(id_post)}/>{likecounts}
+                </div>);
+        }
+        return (
+            <div>
+                <Checkbox icon={<Favorite/>}
+                          checkedIcon={<FavoriteBorder/>}
+                          name="checkedH"
+                          onChange={(event) => this.sendLike(id_post)}/> {likecounts}
+            </div>);
+
+    }
 
     render() {
         let postList = "No Posts Found";
         if(this.state.data_render) {
-            let res = [];
-            Object.values(this.state.data_render).forEach((e, i) => {
-                let likeCheck = false;
-               // let likecount = e.likes.count
-                const items = []
-                e.tags.forEach(element => items.push(<a href={'/tags/' + element.name}>#{element.name} </a>))
-                let avatar  = e.owner.avatar;
+            postList = Object.values(this.state.data_render).map((e, i) => {
+                let likeCheck
+                e.likes.forEach(element => likeCheck |=  element.username === this.state.username);
+                let likecount = e.likes.length;
+                console.log()
+                const items = [];
+                e.tags.forEach((element) => items.push(<a href={'/tags/' + element.name}>#{element.name} </a>));
+                let avatar;
                 try {
                     if (e.owner.avatar.includes("nginx")) {
                         avatar = "http://localhost:4433" + e.owner.avatar.replace("/nginx", "");
@@ -42,46 +76,26 @@ class Tag extends Component {
                         avatar = e.owner.avatar
                     }
                 }catch (e) {
+                    avatar = e.owner.avatar
                 }
-
-                res.push(<div key={i} className="post">
-                    <div className="caption">
-                        <img  src={avatar} alt="dp" className="user" />
-                        <h4 className="caption-text">{e.title}</h4>
-                    </div>
-                    <img onDoubleClick={() => {console.log("aa"); likeCheck = true } } src={e.image} alt="Post" className="post-image" />
-                    <div className="caption">
-                        <img  src={"http://localhost:4433" + e.owner.avatar.replace("/nginx", '')} alt="dp" className="user" />
-                        <h4 className="caption-text">{e.owner.name}: {e.content}  </h4>
-                    </div>
-                    <div>{items}</div>
-                </div>);
-            });
-            return (<div className="post-area" >
-                {res.reverse()}
-            </div>)
+                return (
+                    <div key={i} className="post">
+                        <div className="caption">
+                            <img  src={avatar} alt="dp" className="user" />
+                            <h4 className="caption-text">{e.title}</h4>
+                        </div>
+                        <img onDoubleClick={() => this.sendLike(e.id)} src={e.image} alt="Post" className="post-image" />
+                        {this.getRenderLike(likecount, likeCheck, e.id)}
+                        <div className="caption">
+                            <img  src={"http://localhost:4433" + e.owner.avatar.replace("/nginx", '')} alt="dp" className="user"   />
+                            <h4 className="caption-text fix-image">{e.owner.name}: {e.content}  </h4>
+                        </div>
+                        <div>{items}</div>
+                        <div className="comment-area-btn"><a href={"/comments/" + e.id}>комментарии....</a></div>
+                    </div>);
+            }).reverse();
         }
         //<Comment isLiked={likeCheck} likes={likecount}  comments={e.comments} timestamp={e.time}
-
-        /* if(this.props.getPostReducer.data){
-           postList = this.props.getPostReducer.data.map((e, i) => {
-             let likeCheck = false;
-             let likecount = 0;
-             if(likeCheck){
-               likecount = e.likes + 1;
-             }else{
-               likecount = e.likes;
-             }
-             return (<div key={i} className="post">
-               <div className="caption">
-                 <img  src={userImage} alt="dp" className="user" />
-                 <h4 className="caption-text">{e.caption}</h4>
-               </div>
-               <img onDoubleClick={() => {console.log("aa"); likeCheck = true } } src={e.image_url} alt="Post" className="post-image" />
-               <Comment isLiked={likeCheck} likes={likecount} comments={e.comments} timestamp={e.time} />
-             </div>);
-           }).reverse();
-         }*/
 
         return (
             <div className="post-area" >
@@ -89,7 +103,6 @@ class Tag extends Component {
             </div>
         );
     }
-
 }
 
 const mapStateToProps = (state) => {
