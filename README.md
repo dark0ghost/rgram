@@ -25,18 +25,18 @@
 
 
 ## Главная страница 
-<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/rgram.png" alt="main menu">
+<img src="https://raw.githubusercontent.com/dark0ghost/rgram/main/readme_file/rgram.png" alt="main menu">
 
 ##  Панель добавления постов
-<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/addpost.png" alt="add moment">
+<img src="https://raw.githubusercontent.com/dark0ghost/rgram/main/readme_file/addpost.png" alt="add moment">
 
 ## Страница авторизации
-<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/login.png" alt="login panel">
+<img src="https://raw.githubusercontent.com/dark0ghost/rgram/main/readme_file/login.png" alt="login panel">
 
 
 ## Страница регистрации
-<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/signup.png" alt="sign up panel">
+<img src="https://raw.githubusercontent.com/dark0ghost/rgram/main/readme_file/signup.png" alt="sign up panel">
 
 ## Профиль
-<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/profile.png" alt="profile">
-<img src="https://github.com/dark0ghost/rgram/blob/main/readme_file/profile-1.png" alt="profile  1">
+<img src="https://raw.githubusercontent.com/dark0ghost/rgram/main/readme_file/profile.png" alt="profile">
+<img src="https://raw.githubusercontent.com/dark0ghost/rgram/main/readme_file/profile-1.png" alt="profile  1">
