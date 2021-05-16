@@ -18,10 +18,10 @@ class PostFeed extends React.Component {
     if(this.props.getPostReducer.data) {
       postList = this.props.getPostReducer.data.map((e, i) => {
       let likeCheck = false;
-      let likecount = e.likes.count
-        const items = []
-        e.tags.forEach(element => items.push(<a href={'/tags/' + element.name}>#{element.name} </a>))
-        let avatar
+      let likecount = e.likes.count;
+        const items = [];
+        e.tags.forEach(element => items.push(<a href={'/tags/' + element.name}>#{element.name} </a>));
+        let avatar;
         try {
           if (e.owner.avatar.includes("nginx")) {
             avatar = "http://localhost:4433" + e.owner.avatar.replace("/nginx", "");

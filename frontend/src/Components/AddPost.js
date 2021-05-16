@@ -59,8 +59,8 @@ class AddPost extends React.Component {
     return (
       <div className="post-area">
         <div className="add-post-area">
-          <h1>create post</h1>
-          <input type="file" name="image" multiple accept="image/*,image/jpeg"  width="500" onChange={this.handleFileChange}  required />
+          <h1>Create post</h1>
+          <input type="file" name="image" multiple accept="image/*,image/jpeg"  width="500" onChange={this.handleFileChange}  required={true} />
           <this.prew />
           <textarea name="title" value={this.state.title} onChange={this.handleChange} className="enter_caption" placeholder="title" />
           <textarea name="content" value={this.state.content} onChange={this.handleChange} className="enter_caption" placeholder="content" />

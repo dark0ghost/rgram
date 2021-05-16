@@ -23,6 +23,7 @@ class App extends Component {
     const loader = "http://localhost:8000/templates/loader.gif";
     return (
       <Router>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <div>
           <Header />
           {this.props.getPostReducer.loading && <div className="loader-div"><img src={loader} className="loader"  alt="loader" /></div> }
