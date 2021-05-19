@@ -53,11 +53,19 @@ class UserSerializerWithToken(ModelSerializer):
         fields = ('token', 'username', 'password', "email", "avatar", "name")
 
 
+class CommentSerializer(ModelSerializer):
+    owner = ReadOnlyField(source='owner.username')
+
+    class Meta:
+        model = CommentsModel
+        fields = '__all__'
+
+
 class MomentSerializer(ModelSerializer):
     owner = UserSerializer()
     likes = UserSerializer(many=True, default=[], read_only=True)
     tags = TagSerializer(many=True, default={}, read_only=True)
-    comments = PrimaryKeyRelatedField(many=True, read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
 
     @staticmethod
     def get_user(obj):
@@ -85,14 +93,6 @@ class UserSerializerWithMoment(ModelSerializer):
     class Meta:
         model = LowUserModel
         fields = '__all__'
-
-
-class CommentSerializer(ModelSerializer):
-    owner = ReadOnlyField(source='owner.username')
-
-    class Meta:
-        model = CommentsModel
-        fields = ['id', 'text', 'owner', 'moment']
 
 
 class TagWriteSerializerWithMoment(ModelSerializer):

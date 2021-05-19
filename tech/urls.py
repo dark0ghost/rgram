@@ -17,5 +17,5 @@ urlpatterns = [
     path("create_tag/<name>",  create_tag),
     path('comments/', CommentList.as_view()),
     path('comments/<int:pk>/', CommentDetail.as_view()),
-    path('commetnts-with-post/<int:pk>', comments_with_id_post)
+    path('comments-with-post/<int:pk>', comments_with_id_post)
 ]
