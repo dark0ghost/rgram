@@ -4,6 +4,7 @@ import { getPostThunk } from "../../Actions/getPostActions";
 import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import CommentIcon from '@material-ui/icons/Comment';
 import axios from "axios";
 
 class PostFeed extends Component {
@@ -31,20 +32,18 @@ class PostFeed extends Component {
   getRenderLike = (likecount, likeCheck, id_post) =>{
     if (!likeCheck) {
        return (
-           <div>
-         <Checkbox icon={<FavoriteBorder/>}
+         <div><Checkbox icon={<FavoriteBorder/>}
                                            checkedIcon={<Favorite/>}
                                            name="checkedH"
-                                           onChange={(event) => this.sendLike(id_post)}/>{likecount}
-       </div>);
+                        onChange={(event) => this.sendLike(id_post)}/>{likecount}<a href={"/comments/" + id_post} ><Checkbox icon={<CommentIcon/>}  checkedIcon={<CommentIcon/>} onChange={() =>{ return window.location = "/comments/" + id_post}}/></a></div>
+       );
     }
     return (
-        <div>
-          <Checkbox icon={<Favorite/>}
+          <div><Checkbox icon={<Favorite/>}
                                         checkedIcon={<FavoriteBorder/>}
                                         name="checkedH"
-                                        onChange={(event) => this.sendLike(id_post)}/> {likecount}
-        </div>);
+                                        onChange={(event) => this.sendLike(id_post)}/> {likecount}<a href={"/comments/" + id_post} ><Checkbox icon={<CommentIcon/>}  checkedIcon={<CommentIcon/>} onChange={() =>{ return window.location = "/comments/" + id_post}}/></a></div>
+       );
 
   }
 
@@ -79,8 +78,7 @@ class PostFeed extends Component {
           <img  src={"http://localhost:4433" + e.owner.avatar.replace("/nginx", '')} alt="dp" className="user"   />
           <h4 className="caption-text fix-image">{e.owner.name}: {e.content}  </h4>
         </div>
-        <div>{items}</div>
-        <div className="comment-area-btn"><a href={"/comments/" + e.id}>комментарии....</a></div>
+        <div className="tag">{items}</div>
       </div>);
     }).reverse();
     }

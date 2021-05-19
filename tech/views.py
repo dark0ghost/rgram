@@ -58,6 +58,7 @@ def get_post(request: HttpRequest):
 
 @api_view(['GET'])
 def comments_with_id_post(request: HttpRequest, pk):
+
     all_comments = CommentsModel.objects.filter(moment_id=pk)
     serializer = CommentSerializer(all_comments, many=True)
     return Response(serializer.data)

@@ -75,7 +75,13 @@ body{
   decoration: none;
   color: inherit;
 }
-
+.tag{
+  margin-bottom: 10px;
+}
+.comments-icon{
+  margin-top: 20px;
+  margin-left: 30px;
+}
 .post {
   border: 1px solid rgba(0,0,0,0.3);
   background: #fff;
