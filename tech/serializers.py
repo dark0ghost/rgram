@@ -54,7 +54,7 @@ class UserSerializerWithToken(ModelSerializer):
 
 
 class CommentSerializer(ModelSerializer):
-    owner = ReadOnlyField(source='owner.username')
+    owner = UserSerializer()
 
     class Meta:
         model = CommentsModel
