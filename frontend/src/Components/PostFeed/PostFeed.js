@@ -69,14 +69,14 @@ class PostFeed extends Component {
       return (
           <div key={i} className="post">
         <div className="caption">
-          <img  src={avatar} alt="dp" className="user" />
+          <a href={"/user/" + e.owner.id}><img  src={avatar} alt="dp" className="user" /></a>
           <h4 className="caption-text">{e.title}</h4>
         </div>
         <img onDoubleClick={() => this.sendLike(e.id)} src={e.image} alt="Post" className="post-image" />
             {this.getRenderLike(likecount, likeCheck, e.id)}
         <div className="caption">
-          <img  src={"http://localhost:4433" + e.owner.avatar.replace("/nginx", '')} alt="dp" className="user"   />
-          <h4 className="caption-text fix-image">{e.owner.name}: {e.content}  </h4>
+          <a href={"/user/" + e.owner.id}> <img  src={"http://localhost:4433" + e.owner.avatar.replace("/nginx", '')} alt="dp" className="user"   /></a>
+          <h4 className="caption-text fix-image"><a href={"/user/" + e.owner.id}>{e.owner.name}</a>: {e.content}  </h4>
         </div>
         <div className="tag">{items}</div>
       </div>);

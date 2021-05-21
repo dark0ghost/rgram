@@ -50,3 +50,7 @@
   .msg{
     color: #90C62C;
   }
+a,a:visited{
+  text-decoration-color: inherit;
+  text-decoration: none;
+}
