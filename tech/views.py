@@ -8,28 +8,57 @@ from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from tech.models import MomentModel, CommentsModel, TagModel
+from tech.models import MomentModel, CommentsModel, TagModel, SubscribersModel
 from tech.serializers import UserSerializer, UserSerializerWithToken, MomentSerializer, MomentsWriteSerializer, \
-    CommentSerializer, TagSerializer
+    CommentSerializer, TagSerializer, SubscribersSerializer
 
 
 @api_view(['POST'])
 @login_required
 def add_comment(request, pk):
-    print(request.data)
     model = CommentsModel.objects.create(owner=request.user, text=request.data["content"], moment_id=pk)
     serializer = CommentSerializer(model)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['POST'])
-@login_required()
+@login_required
 def delete(request, pk):
     article = get_object_or_404(MomentModel.objects.all(), pk=pk)
     article.delete()
     return Response({
         "message": "Moment with id `{}` has been deleted.".format(pk)
     }, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST', 'GET'])
+@login_required
+def subscribes(request):
+    model = SubscribersModel.objects.get_or_create(author=request.user)[0]
+    serializer = SubscribersSerializer(model)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', 'GET'])
+@login_required
+def my_subscribes(request):
+    model = SubscribersModel.objects.filter(follows=request.user)
+    print(model)
+    serializer = SubscribersSerializer(model, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', 'GET'])
+@login_required
+def make_subscribe_or_unsubscribe(request, pk):
+    author_model = SubscribersModel.objects.get_or_create(author_id=pk)[0]
+
+    if not author_model.follows.filter(id=request.user.id).exists():
+        author_model.follows.add(request.user)
+    else:
+        author_model.follows.remove(request.user)
+    serializer = SubscribersSerializer(author_model)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST', 'GET'])

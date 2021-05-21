@@ -3,7 +3,7 @@ from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField, EmailField, ImageField
 from rest_framework_jwt.settings import api_settings
 
-from tech.models import MomentModel, LowUserModel, TagModel, CommentsModel
+from tech.models import MomentModel, LowUserModel, TagModel, CommentsModel, SubscribersModel
 
 
 class UserSerializer(ModelSerializer):
@@ -98,4 +98,13 @@ class UserSerializerWithMoment(ModelSerializer):
 class TagWriteSerializerWithMoment(ModelSerializer):
     class Meta:
         model = TagModel
+        fields = '__all__'
+
+
+class SubscribersSerializer(ModelSerializer):
+    author = UserSerializer()
+    follows = UserSerializer(many=True, read_only=True, default=[])
+
+    class Meta:
+        model = SubscribersModel
         fields = '__all__'
