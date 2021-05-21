@@ -17,8 +17,6 @@ class Tag extends Component {
         }
     }
 
-
-
     componentDidMount() {
        fetch("/api/tag/" + this.props.match.params.name, {
            headers: {

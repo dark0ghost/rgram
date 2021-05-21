@@ -11,10 +11,12 @@ class Comment extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      data_render: {},
-      name: this.props.match.params.name,
-        username: localStorage.getItem("username")
+        data_render: {},
+        name: this.props.match.params.name,
+        username: localStorage.getItem("username"),
+        content: "",
     }
+    this.handleChange = this.handleChange.bind(this);
   }
     componentDidMount() {
         fetch("/api/post_with_id/"  + this.state.name, {
@@ -53,6 +55,27 @@ class Comment extends React.Component {
     );
 
   }
+
+  addComment = () => {
+      const input = {
+          username: this.state.username,
+          content: this.state.content,
+      };
+      axios.post("/api/add_comment/" + this.state.name, input, {
+          headers: {
+              Authorization: `JWT ${localStorage.getItem('token')}`
+          }
+      }).then(r => console.log(r.data))
+  }
+
+    handleChange(e){
+        e.preventDefault();
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState({
+            [name] : value
+        })
+    }
 
   render() {
       //console.log(this.state.data_render)
@@ -98,7 +121,8 @@ class Comment extends React.Component {
                                       {e.text}
                                   </p>
                               </div>
-                          </div></div>
+                          </div>
+                      </div>
                   </div>
                   );
               })
@@ -118,13 +142,18 @@ class Comment extends React.Component {
                       <div className="tag">{items}</div>
 
                       {comments}
-
+                        <form>
+                          <div className="msb-reply">
+                              <textarea placeholder="What's on your mind..." name="content" value={this.state.content} onChange={this.handleChange} />
+                              <button onClick={this.addComment}><i className="fa fa-paper-plane-o"/></button>
+                          </div>
+                            </form>
                   </div>
               );
           }).reverse();
           return (
               <div className="post-area">
-                  {postList}
+                  {postList[0]}
               </div>
           );
 
