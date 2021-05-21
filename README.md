@@ -40,3 +40,6 @@
 ## Профиль
 <img src="https://raw.githubusercontent.com/dark0ghost/rgram/main/readme_file/profile.png" alt="profile">
 <img src="https://raw.githubusercontent.com/dark0ghost/rgram/main/readme_file/profile-1.png" alt="profile  1">
+
+## Страница с комментариями
+<img src="https://raw.githubusercontent.com/dark0ghost/rgram/main/readme_file/comments.png" alt="comments">
