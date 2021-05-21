@@ -17,8 +17,6 @@ class Tag extends Component {
         }
     }
 
-
-
     componentDidMount() {
        fetch("/api/tag/" + this.props.match.params.name, {
            headers: {
@@ -63,7 +61,6 @@ class Tag extends Component {
                 let likeCheck
                 e.likes.forEach(element => likeCheck |=  element.username === this.state.username);
                 let likecount = e.likes.length;
-                console.log()
                 const items = [];
                 e.tags.forEach((element) => items.push(<a href={'/tags/' + element.name}>#{element.name} </a>));
                 let avatar;
