@@ -8,9 +8,25 @@ from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from tech.models import MomentModel, CommentsModel, TagModel, SubscribersModel
+from tech.models import MomentModel, CommentsModel, TagModel, SubscribersModel, LowUserModel
 from tech.serializers import UserSerializer, UserSerializerWithToken, MomentSerializer, MomentsWriteSerializer, \
     CommentSerializer, TagSerializer, SubscribersSerializer
+
+
+@api_view(['POST', 'Get'])
+@login_required
+def get_user_data(request, name):
+    model = LowUserModel.objects.filter(username=name)
+    serializer = UserSerializer(model, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', 'Get'])
+@login_required
+def user_subscribes(request, name):
+    model = SubscribersModel.objects.filter(follows__username=name)
+    serializer = SubscribersSerializer(model, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -43,7 +59,6 @@ def subscribes(request):
 @login_required
 def my_subscribes(request):
     model = SubscribersModel.objects.filter(follows=request.user)
-    print(model)
     serializer = SubscribersSerializer(model, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

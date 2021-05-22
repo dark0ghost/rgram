@@ -1,15 +1,31 @@
 import React, {Component} from "react";
-import "./Profile.css"
+import "./User.css"
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
-class Profile extends Component{
+class User extends Component{
     constructor(props){
         super(props);
         this.username = localStorage.getItem('username');
         this.state = {
-            array_post : []
+            name: this.props.match.params.name,
+            array_post : [],
+            user_data: {}
         }
+        this.getUserData = this.getUserData.bind(this)
+    }
+
+    getUserData(username){
+        fetch("user_data/" + this.state.name, {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                    accept: 'application/json'
+                }
+             }
+        ).then(r => r.json()).then(json => {
+
+        })
     }
 
 
@@ -57,48 +73,48 @@ class Profile extends Component{
         let image = localStorage.getItem('avatar').replace("8000","4433").replace("/nginx","");
         let countPost = this.state.array_post.length;
         return (
-        <div className="set" >
-            <header>
-                <div className="container">
-                    <div className="profile">
-                        <div className="profile-image">
-                            <img src={image} alt="profile" className="profile-logo" />
-                        </div>
-                        <div className="profile-user-settings">
-                            <h1 className="profile-user-name">{this.username }</h1>
-                            <button className="btn profile-edit-btn">Edit Profile</button>
-                            <button className="btn profile-settings-btn" aria-label="profile settings">
-                                <i className="fa fa-cog" aria-hidden="true"/></button>
-                        </div>
-                        <div className="profile-stats">
-                            <ul>
-                                <li><span className="profile-stat-count">{countPost}</span> posts</li>
-                                <li><span className="profile-stat-count">188</span> followers</li>
-                                <li><span className="profile-stat-count">206</span> following</li>
-                            </ul>
+            <div className="set" >
+                <header>
+                    <div className="container">
+                        <div className="profile">
+                            <div className="profile-image">
+                                <img src={image} alt="profile" className="profile-logo" />
+                            </div>
+                            <div className="profile-user-settings">
+                                <h1 className="profile-user-name">{this.username }</h1>
+                                <button className="btn profile-edit-btn">Edit Profile</button>
+                                <button className="btn profile-settings-btn" aria-label="profile settings">
+                                    <i className="fa fa-cog" aria-hidden="true"/></button>
+                            </div>
+                            <div className="profile-stats">
+                                <ul>
+                                    <li><span className="profile-stat-count">{countPost}</span> posts</li>
+                                    <li><span className="profile-stat-count">188</span> followers</li>
+                                    <li><span className="profile-stat-count">206</span> following</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </header>
-            <main>
+                </header>
+                <main>
 
-                <div className="container">
+                    <div className="container">
 
-                    <div className="gallery">
+                        <div className="gallery">
 
-                     {this.state.array_post}
-                        <div/>
-                        <div/>
+                            {this.state.array_post}
+                            <div/>
+                            <div/>
 
+                        </div>
                     </div>
-                </div>
 
 
-            </main>
+                </main>
 
 
-        </div>
-    );
+            </div>
+        );
 
 
     }
@@ -106,4 +122,4 @@ class Profile extends Component{
 const mapStateToProps = (state) => {
     return state;
 }
-export default withRouter(connect(mapStateToProps)(Profile));
+export default withRouter(connect(mapStateToProps)(User));

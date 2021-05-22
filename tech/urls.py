@@ -3,7 +3,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from tech.views import current_user, UserList, get_post, add_like, get_post_with_tag, MomentDetail, CommentList, \
     CommentDetail, comments_with_id_post, create_tag, get_post_with_username, get_post_with_id, add_comment, subscribes, \
-    make_subscribe_or_unsubscribe, my_subscribes
+    make_subscribe_or_unsubscribe, my_subscribes, get_user_data, user_subscribes
 
 urlpatterns = [
     path('current_user/', current_user),
@@ -22,5 +22,7 @@ urlpatterns = [
     path("add_comment/<int:pk>", add_comment),
     path("subscribes/", subscribes),
     path("subscribes/<pk>", make_subscribe_or_unsubscribe),
-    path("my_subscribes/", my_subscribes)
+    path("my_subscribes/", my_subscribes),
+    path("user_subscribes/<name>", user_subscribes),
+    path("user_data/<name>", get_user_data)
 ]
