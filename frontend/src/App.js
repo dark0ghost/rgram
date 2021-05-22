@@ -10,6 +10,7 @@ import LoginForm from "./Components/LoginUserForm";
 import Tag from "./Components/PostFeed/Tag";
 import Profile from "./Components/Profile";
 import Comment from "./Components/PostFeed/Comment";
+import User from "./Components/User";
 
 class App extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class App extends Component {
             <Route exact path="/tags/:name" component={Tag} />
             <Route exact path="/profile"  component={Profile} />
             <Route exact path="/comments/:name" component={Comment} />
+            <Route exact path="/user/:name" component={User} />
         </div>
       </Router>
     );

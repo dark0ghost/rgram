@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import "./User.css"
+import "./Profile.css"
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
@@ -9,10 +9,14 @@ class User extends Component{
         this.username = localStorage.getItem('username');
         this.state = {
             name: this.props.match.params.name,
-            array_post : [],
-            user_data: {}
+            array_post: [],
+            user_data: [],
+            user_subscribes: []
         }
+
         this.getUserData = this.getUserData.bind(this)
+        this.getUserPost = this.getUserPost.bind(this)
+        this.getUserSubscribes = this.getUserSubscribes.bind(this)
     }
 
     getUserData(username){
@@ -23,6 +27,32 @@ class User extends Component{
                     accept: 'application/json'
                 }
              }
+        ).then(r => r.json()).then(json => {
+
+        })
+    }
+
+    getUserPost(username){
+        fetch("user_post/" + this.state.name, {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                    accept: 'application/json'
+                }
+            }
+        ).then(r => r.json()).then(json => {
+
+        })
+    }
+
+    getUserSubscribes(username){
+        fetch("user_subscribes/" + this.state.name, {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                    accept: 'application/json'
+                }
+            }
         ).then(r => r.json()).then(json => {
 
         })
