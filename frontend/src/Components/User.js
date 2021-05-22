@@ -6,8 +6,8 @@ import {connect} from "react-redux";
 class User extends Component{
     constructor(props){
         super(props);
-        this.username = localStorage.getItem('username');
         this.state = {
+            username: localStorage.getItem('username'),
             name: this.props.match.params.name,
             array_post: [],
             user_data: [],
@@ -15,12 +15,11 @@ class User extends Component{
         }
 
         this.getUserData = this.getUserData.bind(this)
-        this.getUserPost = this.getUserPost.bind(this)
         this.getUserSubscribes = this.getUserSubscribes.bind(this)
     }
 
-    getUserData(username){
-        fetch("user_data/" + this.state.name, {
+    getUserData(){
+        fetch("/api/user_data/" + this.state.name, {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('token')}`,
                     'Content-Type': 'application/json',
@@ -28,12 +27,13 @@ class User extends Component{
                 }
              }
         ).then(r => r.json()).then(json => {
+            this.setState({user_data: json[0]});
 
         })
     }
 
-    getUserPost(username){
-        fetch("user_post/" + this.state.name, {
+    getUserSubscribes(){
+        fetch("/api/user_subscribes/" + this.state.name, {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('token')}`,
                     'Content-Type': 'application/json',
@@ -41,26 +41,13 @@ class User extends Component{
                 }
             }
         ).then(r => r.json()).then(json => {
-
-        })
-    }
-
-    getUserSubscribes(username){
-        fetch("user_subscribes/" + this.state.name, {
-                headers: {
-                    Authorization: `JWT ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json',
-                    accept: 'application/json'
-                }
-            }
-        ).then(r => r.json()).then(json => {
-
+            this.setState({user_subscribes: json});
         })
     }
 
 
     componentDidMount() {
-        fetch('/api/user_post/' + this.username , {
+        fetch('/api/user_post/' + this.state.name , {
             headers: {
                 Authorization: `JWT ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json',
@@ -94,6 +81,8 @@ class User extends Component{
                     this.setState({array_post: this.state.array_post.concat([response])})
                 })
             });
+        this.getUserData();
+        this.getUserSubscribes();
     }
 
 
@@ -102,6 +91,11 @@ class User extends Component{
     render() {
         let image = localStorage.getItem('avatar').replace("8000","4433").replace("/nginx","");
         let countPost = this.state.array_post.length;
+        if(this.state.username === this.state.name){
+            return window.location = "/profile";
+        }
+        let followers;
+        this.state.user_subscribes.forEach(e => followers = e.follows.length)
         return (
             <div className="set" >
                 <header>
@@ -111,7 +105,7 @@ class User extends Component{
                                 <img src={image} alt="profile" className="profile-logo" />
                             </div>
                             <div className="profile-user-settings">
-                                <h1 className="profile-user-name">{this.username }</h1>
+                                <h1 className="profile-user-name">{this.state.user_data.name}</h1>
                                 <button className="btn profile-edit-btn">Edit Profile</button>
                                 <button className="btn profile-settings-btn" aria-label="profile settings">
                                     <i className="fa fa-cog" aria-hidden="true"/></button>
@@ -119,7 +113,7 @@ class User extends Component{
                             <div className="profile-stats">
                                 <ul>
                                     <li><span className="profile-stat-count">{countPost}</span> posts</li>
-                                    <li><span className="profile-stat-count">188</span> followers</li>
+                                    <li><span className="profile-stat-count">{followers}</span> followers</li>
                                     <li><span className="profile-stat-count">206</span> following</li>
                                 </ul>
                             </div>
