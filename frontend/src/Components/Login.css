@@ -4,6 +4,10 @@
 }
 
 
+a,a:visited{
+    text-decoration-color: inherit;
+    text-decoration: none;
+}
 
 #wrapper {
     width: 500px;

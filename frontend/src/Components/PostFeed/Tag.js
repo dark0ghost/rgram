@@ -83,7 +83,7 @@ class Tag extends Component {
                         {this.getRenderLike(likecount, likeCheck, e.id)}
                         <div className="caption">
                             <img  src={"http://localhost:4433" + e.owner.avatar.replace("/nginx", '')} alt="dp" className="user"   />
-                            <h4 className="caption-text fix-image">{e.owner.name}: {e.content}  </h4>
+                            <h4 className="caption-text fix-image"><a href={"/user/" + e.owner.username}>{e.owner.name}</a>: {e.content}  </h4>
                         </div>
                         <div className="tag">{items}</div>
                     </div>);

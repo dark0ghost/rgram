@@ -16,7 +16,11 @@
 .gradient-button:hover {
     background-position: right center;
 }
-
+a,a:visited{
+    color:#000000;
+    text-decoration-color: inherit;
+    text-decoration: none;
+}
 
 .nav{
     list-style: none;

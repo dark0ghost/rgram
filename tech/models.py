@@ -42,15 +42,15 @@ class MomentModel(Model):
 
 
 class SubscribersModel(Model):
-    author = OneToOneField(LowUserModel, on_delete=CASCADE, related_name='user', unique=True)
-    follows = ManyToManyField("self", related_name='follows')
+    author = ForeignKey(LowUserModel, on_delete=CASCADE, related_name='user')
+    follows = ManyToManyField(LowUserModel, related_name='follows',default=None)
 
 
 class CommentsModel(Model):
-    owner = ForeignKey(LowUserModel,  related_name='comments', on_delete=CASCADE)
+    owner = ForeignKey(LowUserModel, related_name='comments', on_delete=CASCADE)
     text = TextField(blank=False)
     date = DateTimeField(auto_now=True)
-    moment = ForeignKey(MomentModel,  related_name='comments', on_delete=CASCADE)
+    moment = ForeignKey(MomentModel, related_name='comments', on_delete=CASCADE)
 
     def __str__(self):
         return self.text
