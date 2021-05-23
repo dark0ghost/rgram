@@ -31,6 +31,7 @@ class Header extends React.Component {
         localStorage.removeItem('username');
         localStorage.removeItem('name');
         this.setState({ logged_in: false, username: '', name: '', avatar: '' });
+        window.location = "/"
     };
 
     componentDidMount() {
@@ -43,7 +44,7 @@ class Header extends React.Component {
                 }
             })
                 .then(res => {
-                    if (res.status === 401 && window.location["pathname"] !== "/login"){
+                    if (res.status === 401 && window.location["pathname"] !== "/login" &&  window.location["pathname"] !== "/signup"){
                          this.setState({ logged_in: false});
                          return window.location = "/login";
                     }

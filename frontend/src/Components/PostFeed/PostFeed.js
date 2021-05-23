@@ -66,6 +66,7 @@ class PostFeed extends Component {
         }catch (e) {
           avatar = e.owner.avatar
         }
+        console.log(avatar)
       return (
           <div key={i} className="post">
         <div className="caption">
@@ -75,7 +76,7 @@ class PostFeed extends Component {
         <img onDoubleClick={() => this.sendLike(e.id)} src={e.image} alt="Post" className="post-image" />
             {this.getRenderLike(likecount, likeCheck, e.id)}
         <div className="caption">
-          <img  src={"http://localhost:4433" + e.owner.avatar.replace("/nginx", '')} alt="dp" className="user"   />
+          <img  src={avatar} alt="dp" className="user"   />
           <h4 className="caption-text fix-image">{e.owner.name}: {e.content}  </h4>
         </div>
         <div className="tag">{items}</div>

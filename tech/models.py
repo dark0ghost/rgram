@@ -4,7 +4,7 @@ from django.db.models import Model, CharField, DateTimeField, ImageField, Foreig
 
 
 class LowUserModel(AbstractUser):
-    avatar = ImageField(default='templates/deficon.png', upload_to='nginx/')
+    avatar = ImageField(default='nginx/deficon.png', upload_to='nginx/')
     name = CharField(max_length=120)
 
     class Meta:
