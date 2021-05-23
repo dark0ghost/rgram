@@ -2,6 +2,10 @@ import React, {Component} from "react";
 import "./Profile.css"
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
+import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
+import UnsubscribeIcon from '@material-ui/icons/Unsubscribe';
+import Checkbox from "@material-ui/core/Checkbox";
+import axios from "axios";
 
 class User extends Component{
     constructor(props){
@@ -11,11 +15,25 @@ class User extends Component{
             name: this.props.match.params.name,
             array_post: [],
             user_data: [],
-            user_subscribes: []
+            user_subscribes: [],
+            follows: []
         }
 
         this.getUserData = this.getUserData.bind(this)
         this.getUserSubscribes = this.getUserSubscribes.bind(this)
+    }
+
+    getFollows(){
+        fetch("/api/get_subscribes/" + this.state.name, {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                    accept: 'application/json'
+                }
+            }
+        ).then(r => r.json()).then(json => {
+            this.setState({follows: [json]});
+        })
     }
 
     getUserData(){
@@ -83,6 +101,29 @@ class User extends Component{
             });
         this.getUserData();
         this.getUserSubscribes();
+        this.getFollows()
+    }
+
+
+    subscribe = () =>{
+        axios.post("/api/subscribes/" + this.state.name ,{}, {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`
+                }
+            }
+        )
+    }
+    renderSubscribeIcon  = (follows) =>{
+         if(!follows) {
+           return  <Checkbox icon={<SubscriptionsIcon/>}
+                       checkedIcon={<UnsubscribeIcon/>}
+                       name="checkedH"
+                       onChange={(event) => {this.subscribe() }}/>
+         }
+         return <Checkbox icon={<UnsubscribeIcon/>}
+                          checkedIcon={<SubscriptionsIcon/>}
+                          name="checkedH"
+                          onChange={(event) => {this.subscribe() }}/>
     }
 
 
@@ -94,8 +135,14 @@ class User extends Component{
         if(this.state.username === this.state.name){
             return window.location = "/profile";
         }
-        let followers;
+        let follows = 0;
+        this.state.follows.forEach(e => follows = e.follows.length)
+        let followers = 0;
         this.state.user_subscribes.forEach(e => followers = e.follows.length)
+        let subscribesCheck = false;
+        if (follows !== 0) {
+            this.state.follows[0].follows.forEach(element => subscribesCheck |= element.username === this.state.username);
+        }
         return (
             <div className="set" >
                 <header>
@@ -106,15 +153,13 @@ class User extends Component{
                             </div>
                             <div className="profile-user-settings">
                                 <h1 className="profile-user-name">{this.state.user_data.name}</h1>
-                                <button className="btn profile-edit-btn">Edit Profile</button>
-                                <button className="btn profile-settings-btn" aria-label="profile settings">
-                                    <i className="fa fa-cog" aria-hidden="true"/></button>
                             </div>
+                            {this.renderSubscribeIcon(subscribesCheck)}
                             <div className="profile-stats">
                                 <ul>
                                     <li><span className="profile-stat-count">{countPost}</span> posts</li>
                                     <li><span className="profile-stat-count">{followers}</span> followers</li>
-                                    <li><span className="profile-stat-count">206</span> following</li>
+                                    <li><span className="profile-stat-count">{follows}</span> following</li>
                                 </ul>
                             </div>
                         </div>

@@ -49,8 +49,9 @@ def delete(request, pk):
 
 @api_view(['POST', 'GET'])
 @login_required
-def subscribes(request):
-    model = SubscribersModel.objects.get_or_create(author=request.user)[0]
+def subscribes(request, name):
+    user = LowUserModel.objects.filter(username=name)[0]
+    model = SubscribersModel.objects.get_or_create(author=user)[0]
     serializer = SubscribersSerializer(model)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -65,8 +66,9 @@ def my_subscribes(request):
 
 @api_view(['POST', 'GET'])
 @login_required
-def make_subscribe_or_unsubscribe(request, pk):
-    author_model = SubscribersModel.objects.get_or_create(author_id=pk)[0]
+def make_subscribe_or_unsubscribe(request, name):
+    user = LowUserModel.objects.filter(username=name)[0]
+    author_model = SubscribersModel.objects.get_or_create(author=user)[0]
 
     if not author_model.follows.filter(id=request.user.id).exists():
         author_model.follows.add(request.user)

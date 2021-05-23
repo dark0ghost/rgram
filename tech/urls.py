@@ -20,8 +20,8 @@ urlpatterns = [
     path('comments/<int:pk>/', CommentDetail.as_view()),
     path('comments-with-post/<int:pk>', comments_with_id_post),
     path("add_comment/<int:pk>", add_comment),
-    path("subscribes/", subscribes),
-    path("subscribes/<pk>", make_subscribe_or_unsubscribe),
+    path("get_subscribes/<name>", subscribes),
+    path("subscribes/<name>", make_subscribe_or_unsubscribe),
     path("my_subscribes/", my_subscribes),
     path("user_subscribes/<name>", user_subscribes),
     path("user_data/<name>", get_user_data)
