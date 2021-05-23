@@ -14,15 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.contrib.auth import views
 from django.urls import path, include
 
+from dynamic_data_render import urls as  dynamic_data_render_urls
 from tech import urls as tech_url
-from frontend import urls
+from techno_park_django.views import send_favicon
 
 urlpatterns = [
     path('local/admin/', admin.site.urls),
-    path('login/', views.LoginView.as_view(), name='login'),
-    path("", include(urls.urlpatterns)),
-    path("api/", include(tech_url.urlpatterns))
+    path("api/", include(tech_url.urlpatterns)),
+    path("templates/", include(dynamic_data_render_urls.urlpatterns)),
+    path("favicon.ico", send_favicon),
+    path("", send_favicon)
 ]
