@@ -23,18 +23,7 @@ export class Like extends Component {
                 }
             }
         )
-        let count = this.state.likecount;
-        if(this.state.likeCheck){
-            count -= 1;
-        }else{
-            count += 1;
-        }
-
-        this.setState({
-            likecount : count,
-            likeCheck: !this.state.likeCheck
-        })
-
+        this.getLike()
     }
 
     getLike = () =>{
