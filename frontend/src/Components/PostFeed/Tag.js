@@ -5,6 +5,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import Favorite from "@material-ui/icons/Favorite";
 import CommentIcon from "@material-ui/icons/Comment";
+import {Moment} from "../PostComponents/PostView";
 
 
 class Tag extends Component {
@@ -60,7 +61,6 @@ class Tag extends Component {
             postList = Object.values(this.state.data_render).map((e, i) => {
                 let likeCheck
                 e.likes.forEach(element => likeCheck |=  element.username === this.state.username);
-                let likecount = e.likes.length;
                 const items = [];
                 e.tags.forEach((element) => items.push(<a href={'/tags/' + element.name}>#{element.name} </a>));
                 let avatar;
@@ -73,20 +73,9 @@ class Tag extends Component {
                 }catch (e) {
                     avatar = e.owner.avatar
                 }
-                return (
-                    <div key={i} className="post">
-                        <div className="caption">
-                            <img  src={avatar} alt="dp" className="user" />
-                            <h4 className="caption-text">{e.title}</h4>
-                        </div>
-                        <img onDoubleClick={() => this.sendLike(e.id)} src={e.image} alt="Post" className="post-image" />
-                        {this.getRenderLike(likecount, likeCheck, e.id)}
-                        <div className="caption">
-                            <img  src={avatar} alt="dp" className="user"   />
-                            <h4 className="caption-text fix-image"><a href={"/user/" + e.owner.username}>{e.owner.name}</a>: {e.content}  </h4>
-                        </div>
-                        <div className="tag">{items}</div>
-                    </div>);
+                return(
+                    <Moment id_post={e.id} renderName={e.owner.name} renderUserName={e.owner.username} content={e.content} title={e.title} keyPost={i} tags={items} image={e.image} avatar={avatar}/>
+                );
             }).reverse();
         }
         return (

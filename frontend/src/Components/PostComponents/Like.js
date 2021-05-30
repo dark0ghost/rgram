@@ -6,21 +6,13 @@ import CommentIcon from "@material-ui/icons/Comment";
 import axios from "axios";
 
 
-class Like extends Component {
+export class Like extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             username: localStorage.getItem('username'),
-            id_post: this.props.match.params.id_post,
-            id_user: this.props.match.params.id_user,
-            renderName: this.props.match.params.renderName,
-            renderUserName: this.props.match.params.renderUserName,
-            content : this.props.match.params.content,
-            title: this.props.match.params.title,
-            key: this.props.match.params.key,
-            tags: this.props.match.params.tags,
-            image: this.props.match.params.image
+            id_post: this.props.id_post,
         }
     }
 
@@ -31,34 +23,63 @@ class Like extends Component {
                 }
             }
         )
-    }
+        let count = this.state.likecount;
+        if(this.state.likeCheck){
+            count -= 1;
+        }else{
+            count += 1;
+        }
 
-    check = () =>{
+        this.setState({
+            likecount : count,
+            likeCheck: !this.state.likeCheck
+        })
 
     }
 
     getLike = () =>{
-
+        axios.get("/api/posts", {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }}).then((response) => {
+            let like = response.data[this.state.id_post - 1].likes;
+            let likeCheck
+            like.forEach(element => likeCheck |=  element.username === this.state.username);
+            this.setState({
+                likecount : like.length,
+                likeCheck: likeCheck
+            })
+        })
     }
 
-    getRenderLike = (likecount, likeCheck, id_post) =>{
-        if (!likeCheck) {
+    componentDidMount() {
+        this.getLike()
+    }
+
+
+    render() {
+        if (!this.state.likeCheck) {
             return (
                 <div><Checkbox icon={<FavoriteBorder/>}
                                checkedIcon={<Favorite/>}
                                name="checkedH"
-                               onChange={(event) => this.sendLike(id_post)}/>{likecount}<a href={"/comments/" + id_post} ><Checkbox icon={<CommentIcon/>}  checkedIcon={<CommentIcon/>} onChange={() =>{ return window.location = "/comments/" + id_post}}/></a></div>
+                               onChange={(event) => this.sendLike(this.state.id_post)}/>{this.state.likecount}<a
+                    href={"/comments/" + this.state.id_post}><Checkbox icon={<CommentIcon/>}
+                                                                       checkedIcon={<CommentIcon/>} onChange={() => {
+                    return window.location = "/comments/" + this.state.id_post
+                }}/></a></div>
             );
         }
         return (
             <div><Checkbox icon={<Favorite/>}
                            checkedIcon={<FavoriteBorder/>}
                            name="checkedH"
-                           onChange={(event) => this.sendLike(id_post)}/> {likecount}<a href={"/comments/" + id_post} ><Checkbox icon={<CommentIcon/>}  checkedIcon={<CommentIcon/>} onChange={() =>{ return window.location = "/comments/" + id_post}}/></a></div>
+                           onChange={(event) => this.sendLike(this.state.id_post)}/> {this.state.likecount}<a
+                href={"/comments/" + this.state.id_post}><Checkbox icon={<CommentIcon/>} checkedIcon={<CommentIcon/>}
+                                                                   onChange={() => {
+                                                                       return window.location = "/comments/" + this.state.id_post
+                                                                   }}/></a></div>
         );
-    }
-
-    render() {
     }
 
 }

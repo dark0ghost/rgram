@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import "./Profile.css"
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
+import axios from "axios";
+import {ProfilePost} from "./PostFeed/ProfilePost";
 
 class Profile extends Component{
     constructor(props){
@@ -46,6 +48,16 @@ class Profile extends Component{
     }
 
 
+    sendLike = (id_post) =>{
+        axios.post("/api/add_like/" + id_post,{}, {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`
+                }
+            }
+        )
+    }
+
+
     componentDidMount() {
         fetch('/api/user_post/' + this.username , {
             headers: {
@@ -57,26 +69,10 @@ class Profile extends Component{
             .then(res => res.json())
             .then(json => {
                 json.forEach(element =>{
+                    let likeCheck
+                    element.likes.forEach(element => likeCheck |=  element.username === this.state.username);
                     let response = (
-                        <div className="gallery-item" tabIndex="0">
-                            <img src={element.image}
-                                 className="gallery-image" alt=""/>
-                            <div className="gallery-item-type">
-                                <span className="visually-hidden">Gallery</span><i className="fa fa-clone" aria-hidden="true"/>
-                            </div>
-                            <div className="gallery-item-info">
-                                <ul>
-                                    <li className="gallery-item-likes"><span
-                                        className="visually-hidden">Likes:</span><i className="fa  fa-heart"
-                                                                                    aria-hidden="true"/> {element.likes.length}
-                                    </li>
-                                    <li className="gallery-item-comments"><span
-                                        className="visually-hidden">Comments:</span><i className="fa fa-comment"
-                                                                                       aria-hidden="true"/> {element.comments.length}
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        <ProfilePost countLike={element.likes.length}  countComments={element.comments.length} image={element.image} checkLike={likeCheck} id_post={element.id}/>
                     );
                     this.setState({array_post: this.state.array_post.concat([response])})
                 })
