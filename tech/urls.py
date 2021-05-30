@@ -24,5 +24,5 @@ urlpatterns = [
     path("subscribes/<name>", make_subscribe_or_unsubscribe),
     path("my_subscribes/", my_subscribes),
     path("user_subscribes/<name>", user_subscribes),
-    path("user_data/<name>", get_user_data)
+    path("user_data/<name>", get_user_data),
 ]
