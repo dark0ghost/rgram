@@ -228,3 +228,7 @@ SIMPLE_JWT = {
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 AUTH_USER_MODEL = 'tech.LowUserModel'
+
+CENTRIFUGAL_URL = "http://localhost:8000"
+
+CENTRIFUGAL_API_KEY = "aaaf202f-b5f8-4b34-bf88-f6c03a1ecda6"
