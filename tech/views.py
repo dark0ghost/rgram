@@ -1,3 +1,4 @@
+from cent import Client
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpRequest
@@ -11,6 +12,9 @@ from rest_framework.views import APIView
 from tech.models import MomentModel, CommentsModel, TagModel, SubscribersModel, LowUserModel
 from tech.serializers import UserSerializer, UserSerializerWithToken, MomentSerializer, MomentsWriteSerializer, \
     CommentSerializer, TagSerializer, SubscribersSerializer
+from techno_park_django.settings import CENTRIFUGAL_URL, CENTRIFUGAL_API_KEY
+
+centrifugal = Client(CENTRIFUGAL_URL, api_key=CENTRIFUGAL_API_KEY, timeout=1)
 
 
 @api_view(['POST', 'Get'])
@@ -33,7 +37,12 @@ def user_subscribes(request, name):
 @login_required
 def add_comment(request, pk):
     model = CommentsModel.objects.create(owner=request.user, text=request.data["content"], moment_id=pk)
+    params = {
+        "channel": "comment",
+        "data": "hello world"
+    }
     serializer = CommentSerializer(model)
+    centrifugal.add("publish", params)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 

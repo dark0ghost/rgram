@@ -1,36 +1,43 @@
 import React from "react";
 import "./Header.css";
+import {centrifuge} from "../Centrifuge";
 
 
 class Header extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-        logged_in: !!localStorage.getItem('token'),
-        search: "",
-        username: localStorage.getItem("username"),
-        name: localStorage.getItem("name"),
-        avatar: localStorage.getItem("avatar"),
+    constructor(props) {
+        super(props);
+        this.state = {
+            logged_in: !!localStorage.getItem('token'),
+            search: "",
+            username: localStorage.getItem("username"),
+            name: localStorage.getItem("name"),
+            avatar: localStorage.getItem("avatar"),
+        }
     }
-  }
+
+
+    centrifugeInit = () =>{
+
+    }
 
     nav() {
-        return(
+        return (
             <div>
-            <ul>
-            <ul className={"nav"}>
-                <li><a href={"/login"}>login</a></li>
-                <li><a href={"/signup"}>sign up</a></li>
-            </ul>
-        </ul>
-        </div>);
+                <ul>
+                    <ul className={"nav"}>
+                        <li><a href={"/login"}>login</a></li>
+                        <li><a href={"/signup"}>sign up</a></li>
+                    </ul>
+                </ul>
+            </div>);
     }
+
     handle_logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('avatar');
         localStorage.removeItem('username');
         localStorage.removeItem('name');
-        this.setState({ logged_in: false, username: '', name: '', avatar: '' });
+        this.setState({logged_in: false, username: '', name: '', avatar: ''});
     };
 
     componentDidMount() {
@@ -39,18 +46,21 @@ class Header extends React.Component {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('token')}`,
                     'Content-Type': 'application/json',
-                    accept : 'application/json'
+                    accept: 'application/json'
                 }
             })
                 .then(res => {
-                    if (res.status === 401 && window.location["pathname"] !== "/login"){
-                         this.setState({ logged_in: false});
-                         return window.location = "/login";
+                    if (res.status === 401 && window.location["pathname"] !== "/login") {
+                        this.setState({logged_in: false});
+                        return window.location = "/login";
                     }
-                     return res.json()
+                    centrifuge.setToken(localStorage.getItem('token'));
+                    console.log("connect");
+                    centrifuge.connect();
+                    return res.json()
                 })
                 .then(json => {
-                    this.setState({ username: json.username, avatar: json.avatar, name: json.name, });
+                    this.setState({username: json.username, avatar: json.avatar, name: json.name,});
                 });
 
         }
@@ -64,30 +74,31 @@ class Header extends React.Component {
             } else {
                 avatar = this.state.avatar
             }
-        }catch (e) {
+        } catch (e) {
             avatar = this.state.avatar
         }
 
         const logged_in_nav = (
             <div>
                 <ul>
-            <ul className={"nav"}>
-                <li><a href={"/add"}   className={"gradient-button"}>add post</a></li>
-                <li><a href={"/profile"}>{this.state.username}</a></li>
-                <li onClick={this.handle_logout}>logout</li>
-                <li><a href={"/profile"}> <img src={avatar} className="logo" alt="profile"/></a></li>
-            </ul>
+                    <ul className={"nav"}>
+                        <li><a href={"/add"} className={"gradient-button"}>add post</a></li>
+                        <li><a href={"/profile"}>{this.state.username}</a></li>
+                        <li onClick={this.handle_logout}>logout</li>
+                        <li><a href={"/profile"}> <img src={avatar} className="logo" alt="profile"/></a></li>
+                    </ul>
                 </ul>
             </div>
         );
         return (
             <div className="header">
                 <div className="brand">
-                    <a href="/"> <img src="http://localhost:8000/templates/icon.jpg" className="logo" alt="Rgarm" /></a>
+                    <a href="/"> <img src="http://localhost:8000/templates/icon.jpg" className="logo" alt="Rgarm"/></a>
                     <h3>Rgram</h3>
-                    <input type="text" name="search" value={this.props.search} placeholder="Search" className="search_url" />
+                    <input type="text" name="search" value={this.props.search} placeholder="Search"
+                           className="search_url"/>
                 </div>
-                {this.state.logged_in  ? logged_in_nav : this.nav()}
+                {this.state.logged_in ? logged_in_nav : this.nav()}
             </div>
         );
     }

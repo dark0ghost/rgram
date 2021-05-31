@@ -15,11 +15,11 @@ services:
 
   centrifugal:
     image: centrifugo/centrifugo
-    command: centrifugo -c config.json --engine=redis --redis_host=redis --redis_port=6379
+    command: centrifugo --config=config.json --admin
     ports:
-      - "8000:8000"
+      - 8099:8000
     volumes:
-      - "./config:/centrifugo"
+      - "./centrifugal:/centrifugo"
     ulimits:
       nproc: 65536
       nofile:
@@ -63,11 +63,11 @@ services:
       user: "472"
 
   redis:
-    container_name: redis
+    container_name: redis_rgrams
     image:
       redis:alpine
     ports:
-      - "6379:6379"
+      - "6390:6390"
     command:
       - 'redis-server'
       - '--loglevel ${REDIS_LOGLEVEL:-warning}'
