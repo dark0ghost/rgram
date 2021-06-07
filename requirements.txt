@@ -2,7 +2,7 @@ asgiref==3.3.4
 cent==3.0.1
 certifi==2021.5.30
 chardet==4.0.0
-Django==3.2
+Django==3.2.1
 django-cors-headers==3.7.0
 django-crispy-forms==1.11.1
 django-filter==2.4.0
