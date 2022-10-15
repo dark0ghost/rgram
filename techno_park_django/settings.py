@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -95,7 +96,7 @@ DATABASES = {
         'USER': 'eventstracker',
         'PASSWORD': 'A3dSA24Dctf2v4HE',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 
@@ -146,13 +147,15 @@ LOGIN_URL = 'login'
 
 LOGIN_REDIRECT_URL = '/api/current_user/'
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 CORS_ORIGIN_WHITELIST = (
-    'https://localhost:3000',
+    'https://localhost:8000',
 )
+
+STATICFILES_DIRS = [os.path.join('frontend', 'build', 'static')]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 

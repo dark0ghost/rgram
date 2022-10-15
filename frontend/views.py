@@ -3,4 +3,5 @@ from django.shortcuts import render
 
 
 def get_react(request: HttpRequest):
-    return render(request, "./build/index.html")
+    context = {}
+    return render(request, "frontend/build/index.html", context)
