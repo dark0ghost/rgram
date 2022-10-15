@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.3"
 
 services:
 
@@ -37,7 +37,7 @@ services:
     restart:
       always
     ports:
-      - 5432:5432
+      - 5433:5432
 
   influxdb:
     image: influxdb:1.8
