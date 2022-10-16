@@ -96,7 +96,7 @@ DATABASES = {
         'USER': 'eventstracker',
         'PASSWORD': 'A3dSA24Dctf2v4HE',
         'HOST': 'localhost',
-        'PORT': '5433',
+        'PORT': '5555',
     }
 }
 

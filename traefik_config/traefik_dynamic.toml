@@ -1,0 +1,38 @@
+[http.middlewares]
+  [http.middlewares.auth.basicAuth]
+    users = [
+      "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/",
+      "test2:$apr1$d9hr9HBB$4HxwgUir3HP4EsggP/QNo0",
+      "admin:$apr1$ruca84Hq$mbjdMZBAG.KWn7vfN/SNK/"
+    ]
+
+[tls.options]
+  [tls.options.default]
+    minVersion = "VersionTLS12"
+  [tls.options.mintls13]
+    minVersion = "VersionTLS13"
+
+[http.routers]
+  [http.routers.api]
+    rule = "Host(`traefik.localhost`) && PathPrefix(`/dashboard`)"
+    service = "api@internal"
+  [http.routers.router0]
+    rule = "Host(`localhost`) && PathPrefix(`/`)"
+    service = "frontend"
+  [http.routers.router1]
+    rule = "Host(`localhost`) && PathPrefix(`/index`)"
+    service = "backend-frontend"
+  [http.routers.router2]
+    rule = "Host(`localhost`) && PathPrefix(`/local`)"
+    service = "backend"
+  [http.routers.router3]
+    rule = "Host(`localhost`) && PathPrefix(`/api`)"
+    service = "backend"
+
+[http.services]
+  [[http.services.frontend.loadBalancer.servers]]
+    url = "http://localhost:3000"
+  [[http.services.backend-frontend.loadBalancer.servers]]
+    url = "http://localhost:8000/index"
+  [[http.services.backend.loadBalancer.servers]]
+    url = "http://localhost:8000/"

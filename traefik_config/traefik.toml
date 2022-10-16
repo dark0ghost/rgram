@@ -1,5 +1,3 @@
-defaultEntryPoints = ["https","http"]
-
 [entryPoints]
   [entryPoints.http]
   address = ":80"
@@ -10,27 +8,29 @@ defaultEntryPoints = ["https","http"]
   [entryPoints.https.tls]
   [entryPoints.admin]
   address = ":8083"
-    [entryPoints.admin.auth]
-    [entryPoints.admin.auth.basic]
-      users = [
-        "test:$apr1$K8RmlfSZ$zOnm8Bdc7ohhbFVqUVkny."
-      ]
+ [entryPoints.internal]
+    address = ":8888"
 [retry]
 
-[api]
-entryPoint = "admin"
-dashboard = true
 
 [docker]
-endpoint = "unix:///var/run/docker.sock"
-domain = "yourdomain.org"
-watch = true
-exposedByDefault = false
-network = "web"
+ endpoint = "unix:///var/run/docker.sock"
+ domain = "localhost"
+ network = "web"
 
+[acme]
+storage = "acme.json"
 
 [certificatesResolvers.lets-encrypt.acme]
-  email = "<your_email>"
-  storage = "acme.json"
+  tlschallenge=true
+  email = "rgram@noreply.github.com"
+  storage = "traefik_config/acme.json"
   [certificatesResolvers.lets-encrypt.acme.httpChallenge]
     entryPoint = "web"
+  [certificatesResolvers.myresolver.acme.dnsChallenge]
+    provider = "cloudflare"
+    resolvers = ["1.1.1.1:53", "8.8.8.8:53"]
+    delayBeforeCheck = 0
+
+[providers.file]
+  filename = "traefik_dynamic.toml"
