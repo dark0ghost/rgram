@@ -1,0 +1,36 @@
+defaultEntryPoints = ["https","http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+  [entryPoints.https.tls]
+  [entryPoints.admin]
+  address = ":8083"
+    [entryPoints.admin.auth]
+    [entryPoints.admin.auth.basic]
+      users = [
+        "test:$apr1$K8RmlfSZ$zOnm8Bdc7ohhbFVqUVkny."
+      ]
+[retry]
+
+[api]
+entryPoint = "admin"
+dashboard = true
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "yourdomain.org"
+watch = true
+exposedByDefault = false
+network = "web"
+
+
+[certificatesResolvers.lets-encrypt.acme]
+  email = "<your_email>"
+  storage = "acme.json"
+  [certificatesResolvers.lets-encrypt.acme.httpChallenge]
+    entryPoint = "web"
