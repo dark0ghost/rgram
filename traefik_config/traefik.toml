@@ -1,0 +1,36 @@
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+  [entryPoints.https.tls]
+  [entryPoints.admin]
+  address = ":8083"
+ [entryPoints.internal]
+    address = ":8888"
+[retry]
+
+
+[docker]
+ endpoint = "unix:///var/run/docker.sock"
+ domain = "localhost"
+ network = "web"
+
+[acme]
+storage = "acme.json"
+
+[certificatesResolvers.lets-encrypt.acme]
+  tlschallenge=true
+  email = "rgram@noreply.github.com"
+  storage = "traefik_config/acme.json"
+  [certificatesResolvers.lets-encrypt.acme.httpChallenge]
+    entryPoint = "web"
+  [certificatesResolvers.myresolver.acme.dnsChallenge]
+    provider = "cloudflare"
+    resolvers = ["1.1.1.1:53", "8.8.8.8:53"]
+    delayBeforeCheck = 0
+
+[providers.file]
+  filename = "traefik_dynamic.toml"

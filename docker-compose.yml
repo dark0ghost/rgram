@@ -1,8 +1,56 @@
 version: "3.3"
 
 services:
+  django:
+    build:
+      context: rgram
+      dockerfile: Dockerfile
+    ports:
+        - "8000:8000"
+    volumes:
+        - ./rgram:/rgram
+    command:
+       python3 manage.py runserver 0.0.0.0:8000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.django.rule=Host(`django.localhost`)"
 
-  web:
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
+    restart: unless-stopped
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    networks:
+      - default
+
+  traefik:
+    image: "traefik:v2.9"
+    restart: always
+    container_name: "traefik"
+    ports:
+      - "443:443"
+      - "8080:8080"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.file.filename=traefik_dynamic.toml"
+      - "traefik.enable=true"
+      - "traefik.http.routers.django.rule=Host(`django.localhost`)"
+      - "traefik.http.routers.django.tls=true"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik_config/traefik_dynamic.toml:/traefik_dynamic.toml:ro"
+
+
+  nginx:
     image: nginx
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
@@ -17,7 +65,7 @@ services:
     image: centrifugo/centrifugo
     command: centrifugo --config=config.json --admin
     ports:
-      - 8099:8000
+      - "8099:8000"
     volumes:
       - "./centrifugal:/centrifugo"
     ulimits:
@@ -37,7 +85,7 @@ services:
     restart:
       always
     ports:
-      - 5433:5432
+      - "5555:5432"
 
   influxdb:
     image: influxdb:1.8
@@ -48,7 +96,7 @@ services:
     env_file:
       - evn/influxdb.evn
     ports:
-      - 8086:8086
+      - "8086:8086"
 
   grafana:
       image: grafana/grafana:7.3.4
@@ -59,7 +107,7 @@ services:
       environment:
         - GF_DATE_FORMATS_DEFAULT_TIMEZONE=browser
       ports:
-        - 3000:3000
+        - "3000:3000"
       user: "472"
 
   redis:
@@ -85,11 +133,10 @@ services:
     command:
       - '-m 64'
 
-
   adminer:
     image:
       adminer
     restart:
       always
     ports:
-      - 8080:8080
+      - "9080:8080"

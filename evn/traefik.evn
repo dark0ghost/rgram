@@ -1,0 +1,4 @@
+DOMAIN=localhost
+EMAIL=admin@localhost
+TRAEFIK_USER=admin
+TRAEFIK_PASSWORD_HASH=$2y$10$zi5n43jq9S63gBqSJwHTH.nCai2vB0SW/ABPGg2jSGmJBVRo0A.ni
