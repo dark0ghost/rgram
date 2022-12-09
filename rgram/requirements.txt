@@ -1,6 +1,6 @@
 asgiref==3.3.4
 cent==3.0.1
-certifi==2021.5.30
+certifi==2022.12.7
 chardet==4.0.0
 Django==3.2.11
 django-cors-headers==3.7.0
